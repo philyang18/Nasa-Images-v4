@@ -7,7 +7,9 @@ import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-do
 import Loading from './Loading';
 
 
-const API_KEY = "RzyT98G4RWi51f3LYNHdbdEzUJkUH7RdAJnQoOd0";
+// const API_KEY = "RzyT98G4RWi51f3LYNHdbdEzUJkUH7RdAJnQoOd0";
+// const API_KEY = "BfzfbPpRYn7O5rafnhT7BMOC0hUoEV54ybVwWe1a";
+const API_KEY = "PBViMuqFzfpvcXjqnmC6jYR4pqkNbyC0jNUy95Sh";
 async function fetchRover(date) {
   try {
     const response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`);
@@ -89,33 +91,37 @@ class MarsRover extends React.Component {
 		super(props);
 		this.state = {
 			photos: [],
-			todaysDate: '',
-			searchDate: '2018-11-15',
+			currentDate: '',
+			previousDate: '',
 			invalidDate: true,
 			loading: false,
 			overRequested: false
 		};
 	}
-	async componentDidMount() {
+	componentDidMount = async () => {
 		var today = new Date(),
-			date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
 			year = today.getFullYear(),
 			month = today.getMonth() + 1,
-			day = today.getDate()
-		this.setState({ todaysDate: today, loading: true }); 
-		console.log(today);
-		while (this.state.invalidDate) {
-			// const photos = await fetchRover(date);
-			const photos = await fetchRover("2019-9-28");
-			if(photos == null) {
+			day = today.getDate();
+		this.setState({loading: true }); 
+		// today.setDate(18);
+		// today.setMonth(3);
+		// console.log(today);
+		while (this.state.photos.length === 0) {
+			var todayString = moment(today).format("YYYY-M-D");
+			console.log(todayString);
+			const photos = await fetchRover(todayString);
+			// const photos = await fetchRover("2019-4-18");
+			if(photos === null) {
 				this.setState({ overRequested: true });
 				break;
 			}
-			if (photos.length !== 0) {
+			if (photos.length > 0) {
 				this.setState({ photos });
-				console.log(photos.length);
+				// console.log(photos.length);
 				this.setState({invalidDate: false});
-			} else {
+			} 
+			else {
 				if (Number(day) === 1){
 					month -= 1;
 					if(Number(month) === 5 || Number(month) === 7 || Number(month) === 8 || Number(month) === 10 || Number(month) === 12) {
@@ -136,22 +142,37 @@ class MarsRover extends React.Component {
 				} else {
 					day -= 1;
 				}
-				date = String(year) + '-' + String(month) + '-' + String(day);
+				today.setMonth(month -1);
+				today.setFullYear(year);
+				today.setDate(day);
 			}
 		}
-		this.setState({ loading: false });
+		this.setState({ currentDate: today, previousDate: today, loading: false });
+	}
+	componentDidUpdate = async () => {
+		if(this.state.currentDate !== this.state.previousDate){
+			this.setState({ previousDate: this.state.currentDate, photos:[], loading: true, invalidDate: true, overRequested: false}); 
+			var todayString = moment(this.state.currentDate).format("YYYY-M-D");
+			const photos = await fetchRover(todayString);
+			console.log(photos);
+			console.log(photos.length);
+			if(photos.length === 0) {
+				this.setState({photos, loading: false});
+			}
+			if(photos === null) {
+				this.setState({ overRequested: true, loading: false});
+			}
+			if(photos.length > 0){
+				this.setState({ photos });
+				this.setState({invalidDate: false, loading: false});
+			}
+		}
 	}
 	formatDisplayDate(date) {
 		return moment(date).format("MMMM Do YYYY");
 	}
-	formatPickerDate(date) {
-		var dateComponents = date.split('-');
-		return new Date(dateComponents[0], dateComponents[1], dateComponents[2], 0, 0, 0, 0);
-		
-		
-	}
 	handleChange = event => {
-		this.setState({ searchDate: event.target});
+		this.setState({ currentDate: event });
 	}
 	render() {
 		return (
@@ -160,19 +181,20 @@ class MarsRover extends React.Component {
 					<div>
 						{this.state.loading ? <Loading/>:
 							<div>
-								{this.state.invalidDate ? <div id="mars-photo-error">No photos on {this.state.searchDate}</div> :
+								{this.state.photos.length === 0 ? <div id="mars-photo-error">No photos on {this.formatDisplayDate(this.state.currentDate)}</div> :
 									<div id="mars-photo-container">
 										<div className="row">
-											<div id="mars-photo-date" className="col-6">{this.formatDisplayDate(this.state.searchDate)}</div>
-											<DatePicker
-												className="col-6"
-												selected={this.formatPickerDate(this.state.searchDate)}
-												onChange={this.handleChange}
-											/>
+											<div id="mars-photo-date" className="col-12">{this.formatDisplayDate(this.state.currentDate)}</div>
+											<div id="mars-date-picker" className="col-12">
+												<DatePicker
+													selected={this.state.currentDate}
+													onChange={this.handleChange}
+												/>
+											</div>
 										</div>
 										{this.state.photos.map(photo => {
 											return (
-												<img className="mars-photo" src={photo.img_src} />
+												<img className="mars-photo" src={photo.img_src} key={photo.id} alt={photo.camera.full_name}/>
 											);
 										})}
 									</div>

@@ -17,8 +17,15 @@
   margin-left: 1%;
 }
 
-#mars-photo date {
+#mars-photo-date {
   font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+  font-size: 30px;
+}
+
+#mars-date-picker {
+	margin: auto;
+	text-align: center;
 }
 #mars-photo-error {
   display: flex;
