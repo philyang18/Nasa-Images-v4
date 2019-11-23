@@ -1,11 +1,11 @@
-#apod-container{
-  width: 100%;
+#homePage, #appPage { 
+	font-family: 'Dosis', sans-serif !important;
+	width: 100%;
 }
-#apod-photo{
-  display: block;
-  margin: auto;
+#navigation-bar{
+	width: 100%;
 }
-
+/* =================Mars Rover=============== */
 #mars-photo-container {
   width: 99%;
   margin-bottom: 1%;
@@ -16,13 +16,10 @@
   margin-top: 1%;
   margin-left: 1%;
 }
-
 #mars-photo-date {
-  font-family: 'Times New Roman', Times, serif;
   text-align: center;
   font-size: 30px;
 }
-
 #mars-date-picker {
 	margin: auto;
 	text-align: center;
@@ -33,6 +30,22 @@
 	align-items: center;
 }
 
+/* =================Single Mars Image=============== */
+#back-button {
+	font-family: 'Dosis', sans-serif !important;
+	margin-bottom: 20px;
+}
+#single-photo-page {
+	margin-top: 20px;
+}
+
+#single-mars-photo img {
+	width: 80%;
+	float:right;
+}
+#single-photo-details{
+	margin: auto;
+}
 .nav-link a {
   color: rgba(255,255,255,.5);
 }
@@ -40,9 +53,74 @@ a.active {
   color:white;
 }
 
+/* =================Home=============== */
+#apod-content{
+	width: 90%;
+}
+#home-title{
+	text-align: center;
+	margin: 30px auto 30px auto;
+	font-size: 70px;
+}
+#apod-details {
+	width: 95%;
+	margin: auto;
+	font-family: 'Dosis', sans-serif !important;
+	font-size: 20px;
+}
+#apod-date {
+	text-align: center;
+	margin-top: 20px;
+	font-size: 30px;
+}
+#main-image, #previous-image-column {
+	width: 100%;
+}
+#main-image img, Iframe {
+	width: 100%;
+	margin: auto;
+	display: block;
+}
+#main-image Iframe {
+	height: 500px;
+}
+#previous-image-column img {
+	width: 100%;
+	display: block;
+	margin: auto;
+	margin-bottom: 10px;
+}
+#previous-image-column img.active {
+	opacity: .5;
+}
+.hide-description {
+	display:none;
+}
+.show-description {
+	display: block;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+	#home-title{
+		font-size: 50px;
+	}
+	#main-image Iframe {
+		height: 200px;
+	}
+}
 
 
-/* loader */
+
+
+
+
+
+
+
+
+
+
+/* =================Loader=============== */
 
 #loader-container {
   width: 100vw;
