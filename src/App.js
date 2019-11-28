@@ -4,13 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 import Home from './Home';
 import MarsRover from './MarsRover';
-import SingleImage from './SingleImage';
+import SingleMarsImage from './SingleMarsImage';
+import Favorites from './Favorites';
 import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
-
-
+import EditFavorite from './EditFavorite';
+import ErrorPage from './ErrorPage';
 
 export default class App extends React.Component {
-
   render () {
     return (
     	<Router id="appPage">
@@ -25,28 +25,28 @@ export default class App extends React.Component {
 				    		<NavLink className="nav-link" to="/" exact={true}>Home</NavLink>
 				    	</li>
 				    	<li className="nav-item">
-				    		<NavLink className="nav-link" to="/mars_rover">Mars</NavLink>
+				    		<NavLink className="nav-link" to="/mars">Mars</NavLink>
 				    	</li>
+				    	{/* <li className="nav-item">
+				    		<NavLink className="nav-link" to="/#">Library</NavLink>
+				    	</li> */}
 				    	<li className="nav-item">
-				    		<NavLink className="nav-link" to="/hello">Library</NavLink>
-				    	</li>
-				    	<li className="nav-item">
-				    		<a className="nav-link" href="#">Favorites</a>
+				    		<NavLink className="nav-link" to="/favorites">Favorites</NavLink>
 				    	</li>
 			    	</ul>
 		    	</div>
 	    	</nav>
 	    	<Switch>
 	    		<Route path="/" exact={true} component={Home} />
-	    		<Route path="/mars_rover" exact={true} component={MarsRover}/>
-				{/* <Route path="/mars_rover" exact={true} render={(props) => <MarsRover {...props} earth_date={} />}/> */}
-				<Route path="/mars_rover/:info" exact={true} component={SingleImage}/>
+	    		<Route path="/mars" exact={true} component={MarsRover}/>
+				<Route path="/mars/:info" exact={true} component={SingleMarsImage}/>
+				<Route path="/favorites" exact={true} component={Favorites} />
+				<Route path="/favorites/edit/:id" component={EditFavorite} />
+				<Route component={ErrorPage} />
 	    	</Switch>
-
     	</Router>
       );
   }
-  
 }
 
 

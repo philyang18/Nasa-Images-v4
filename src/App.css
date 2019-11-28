@@ -1,49 +1,76 @@
-#homePage, #appPage { 
+#homePage, #appPage, #marsPage, #navbarNav, #singlePhotoPage, #favoritesPage { 
 	font-family: 'Dosis', sans-serif !important;
 	width: 100%;
+}
+#navbarNav { 
+	font-size: 21px;
+
 }
 #navigation-bar{
 	width: 100%;
 }
 /* =================Mars Rover=============== */
-#mars-photo-container {
-  width: 99%;
-  margin-bottom: 1%;
-  background-color: rgba(0,0,0,0);
+
+.loading-error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.mars-photo {
-  width: 24%;
-  margin-top: 1%;
-  margin-left: 1%;
-}
+
 #mars-photo-date {
   text-align: center;
   font-size: 30px;
+  margin-bottom: 20px;
 }
 #mars-date-picker {
 	margin: auto;
 	text-align: center;
+	font-size: 25px;
 }
-#mars-photo-error {
-  display: flex;
-	justify-content: center;
+#mars-title-section {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+/* Used for favorites as well */
+.photo-container {
+	margin-top: 15px;
+}
+.photo-section {
+	display: flex;
 	align-items: center;
+}
+.photo-section img {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.mars-photo img, .mars-photo a {
+	width: 100%;
 }
 
 /* =================Single Mars Image=============== */
 #back-button {
 	font-family: 'Dosis', sans-serif !important;
 	margin-bottom: 20px;
+	font-size: 20px;
+	border-radius: 5px;
+	box-shadow: 1px 1px grey;
+	margin-left: 20px;
 }
-#single-photo-page {
-	margin-top: 20px;
+#singlePhotoPage {
+	margin-top: 30px;
 }
-
-#single-mars-photo img {
+.single-photo {
+	/* display: block; */
+	display: flex;
+	align-items: center;
+}
+.single-photo img {
 	width: 80%;
 	float:right;
+	display: block;
 }
-#single-photo-details{
+.single-photo-details{
 	margin: auto;
 }
 .nav-link a {
@@ -52,24 +79,41 @@
 a.active {
   color:white;
 }
-
+#single-photo-details h2 {
+	margin-bottom: 20px;
+}
+@media screen and (min-width: 0) and (max-width: 767px) {
+	#single-mars-photo {
+		margin: 20px auto 40px auto;
+	}
+	#single-mars-photo img {
+		width: 100%;
+		margin: auto;
+		float: none;
+	}
+	#single-photo-details {
+		width: 80%;
+	}
+}
 /* =================Home=============== */
 #apod-content{
 	width: 90%;
 }
-#home-title{
+.page-title{
 	text-align: center;
-	margin: 30px auto 30px auto;
+	margin: 50px auto 50px auto;
 	font-size: 70px;
 }
-#apod-details {
+.apod-details {
 	width: 95%;
 	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 100px;
 	font-family: 'Dosis', sans-serif !important;
 	font-size: 20px;
 }
 #apod-date {
-	text-align: center;
+	/* text-align: center; */
 	margin-top: 20px;
 	font-size: 30px;
 }
@@ -89,9 +133,15 @@ a.active {
 	display: block;
 	margin: auto;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 #previous-image-column img.active {
 	opacity: .5;
+}
+#apod-description-button {
+	font-size: 18px;
+	font-style: italic;
+	cursor: pointer;
 }
 .hide-description {
 	display:none;
@@ -99,9 +149,21 @@ a.active {
 .show-description {
 	display: block;
 }
+.column-title {
+	margin-left: 25px;
+}
+.icon-holder {
+	width: 20px;
+    height: 20px;
+}
+.heart-icon {
+	width: 20px;
+    height: 20px;
+}
+
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
-	#home-title{
+	.page-title{
 		font-size: 50px;
 	}
 	#main-image Iframe {
@@ -123,8 +185,12 @@ a.active {
 /* =================Loader=============== */
 
 #loader-container {
-  width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 50vh;
+	margin: 0;
+	padding: 0;
+ 	/* width: 100vw; */
+	/* height: 100vh; */
 	display: flex;
 	justify-content: center;
 	align-items: center;

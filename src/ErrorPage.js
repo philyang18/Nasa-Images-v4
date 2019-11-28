@@ -1,12 +1,15 @@
 import React from 'react';
 
 export default function(props) {
-    const { url } = props;
+    var { url } = props;
+    if (!url) {
+        url = props.location.pathname;
+    }
     return(
-        <div classnName="mars-photo-error">
-            <p>The URL:</p>
-            <p>{url}</p> 
-            <p>was not found!</p>
+        <div className="loading-error">
+            <p>The URL </p>
+            <p> {url} </p> 
+            <p> was not found!</p>
         </div>
     );
 }

@@ -41,12 +41,13 @@ export default class MarsRover extends React.Component {
 				var todayString = moment(today).format("YYYY-M-D");
 				console.log("2:" + todayString);
 				const photos = await fetchRover(todayString);
-				if(photos === null) {
+				if(!photos) {
 					this.setState({ overRequested: true });
 					break;
 				}
 				if (photos.length > 0) {
 					this.setState({ photos });
+					console.log(photos);
 				} 
 				else {
 					if (Number(day) === 1){
@@ -96,20 +97,19 @@ export default class MarsRover extends React.Component {
 			}
 		}
 	}
-	
 	handleChange = event => {
 		this.setState({ currentDate: event });
 	}
 	render() {
 		return (
-			<div>
-				{this.state.overRequested ? <div>Too many requests to Nasa API </div>: 
+			<div id="marsPage">
+				{this.state.overRequested ? <div>Too many requests to Nasa API </div> : 
 					<div>
-						{this.state.loading ? <Loading/>:
-							
-							<div id="mars-photo-container">
-								<div className="row">
-									<div id="mars-photo-date" className="col-12">{formatDisplayDate(this.state.currentDate)}</div>
+						
+							<div className="container">
+								<h1 className="page-title">Mars Rover Photos</h1>	
+								<div className="row photo-section">
+									{/* <div id="mars-photo-date" className="col-12">{formatDisplayDate(this.state.currentDate)}</div> */}
 									<div id="mars-date-picker" className="col-12">
 										<DatePicker
 											selected={this.state.currentDate}
@@ -117,24 +117,27 @@ export default class MarsRover extends React.Component {
 										/>
 									</div>
 								</div>
-								
-								{this.state.photos.length === 0 ? <div id="mars-photo-error">No photos on {formatDisplayDate(this.state.currentDate)}</div> :
-									<div>
-										{this.state.photos.map(photo => {
-											return (
-												<NavLink to={`/mars_rover/earth_date=${photo.earth_date}&photo_id=${photo.id}`}>
-													<img className="mars-photo" src={photo.img_src} key={photo.id} alt={photo.camera.full_name}/>
-												</NavLink>
-											);
-										})}
+								{this.state.loading ? <Loading/> :
+									<div className="photo-container">
+										{this.state.photos.length === 0 ? <div id="mars-photo-error">No photos on {formatDisplayDate(this.state.currentDate)}</div> :
+											<div className="row photo-section">
+												{this.state.photos.map(photo => {
+													return (
+														<div className="mars-photo col-lg-3 col-md-4 col-sm-6">
+															<NavLink to={`/mars/earth_date=${photo.earth_date}&photo_id=${photo.id}`}>
+																<img src={photo.img_src} key={photo.id} alt={photo.camera.full_name}/>
+															</NavLink>
+														</div>
+													);
+												})}
+											</div>
+										}
 									</div>
 								}
 							</div>
-						}
 					</div>
 				}
 			</div>
-			
 		);
 	}
 }
