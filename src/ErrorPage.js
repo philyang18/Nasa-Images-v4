@@ -6,10 +6,12 @@ export default function(props) {
         url = props.location.pathname;
     }
     return(
-        <div className="loading-error">
-            <p>The URL </p>
-            <p> {url} </p> 
-            <p> was not found!</p>
+        <div className="container loading-error">
+            <div className="row">
+                <p className="col-12">The URL </p>
+                <p className="col-12"> {url} </p> 
+                <p className="col-12"> was not found!</p>
+            </div>
         </div>
     );
 }

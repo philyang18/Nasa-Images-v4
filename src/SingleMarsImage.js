@@ -15,28 +15,29 @@ export default class SingeImage extends React.Component {
             idExists: false,
             loading: false,
             photo: {}, 
-            liked: false
+            liked: false,
+            loadingError: false
         };
     }
     componentDidMount = async () => {
-        // console.log(this.props);
         this.setState({ loading: true });
-        var firstSplit = this.props.match.params.info.split("=");
-        const id = firstSplit[2];
-        var secondSplit = firstSplit[1].split("&");
-        const earthDate = secondSplit[0];
-        const photos = await fetchRover(earthDate);
-        // console.log(photos);
-        this.setState({photos });
-        this.state.photos.map(photo => {
-            if (String(photo.id) === id) {
-                this.setState({ idExists: true , photo });
-            }
-            return 0;
-        });
-        // console.log("photo");
-        // console.log(this.state.photo);
-        this.checkIfLiked();
+        try {
+             var firstSplit = this.props.match.params.info.split("=");
+             const id = firstSplit[2];
+            var secondSplit = firstSplit[1].split("&");
+            const earthDate = secondSplit[0];
+            const photos = await fetchRover(earthDate);
+            this.setState({photos });
+            this.state.photos.map(photo => {
+                if (String(photo.id) === id) {
+                    this.setState({ idExists: true , photo });
+                }
+                return 0;
+            });
+            this.checkIfLiked();
+        } catch {
+            this.setState({ loadingError: true });
+        }
         this.setState({ loading: false });
     }
     checkIfLiked = async () => {
@@ -112,13 +113,13 @@ export default class SingeImage extends React.Component {
                                         <p><strong>Launch Date: </strong>{formatDisplayDate(this.state.photo.rover.launch_date)}</p>
                                         <p><strong>Landing Date: </strong>{formatDisplayDate(this.state.photo.rover.landing_date)}</p>
                                         <p><strong>Status: </strong>{this.state.photo.rover.status}</p>
-                                        <div className="icon-holder" onClick={this.toggleLike}>
+                                        <p className="icon-holder" onClick={this.toggleLike}>
                                             <img
                                                 src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
                                                 className="heart-icon"
                                                 alt="heart icon"
                                             />
-                                        </div>
+                                        </p>
                                     </div>
                                 </div>
                             </div>      

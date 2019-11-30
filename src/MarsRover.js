@@ -107,7 +107,8 @@ export default class MarsRover extends React.Component {
 					<div>
 						
 							<div className="container">
-								<h1 className="page-title">Mars Rover Photos</h1>	
+								<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Mars Rover Photos</div></h1>	
+								<h1 className="page-title d-none d-md-block">NASA Mars Rover Photos</h1>			
 								<div className="row photo-section">
 									{/* <div id="mars-photo-date" className="col-12">{formatDisplayDate(this.state.currentDate)}</div> */}
 									<div id="mars-date-picker" className="col-12">

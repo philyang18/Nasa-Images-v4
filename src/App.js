@@ -9,6 +9,8 @@ import Favorites from './Favorites';
 import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
 import EditFavorite from './EditFavorite';
 import ErrorPage from './ErrorPage';
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
 
 export default class App extends React.Component {
   render () {
@@ -26,16 +28,15 @@ export default class App extends React.Component {
 				    	</li>
 				    	<li className="nav-item">
 				    		<NavLink className="nav-link" to="/mars">Mars</NavLink>
-				    	</li>
-				    	{/* <li className="nav-item">
-				    		<NavLink className="nav-link" to="/#">Library</NavLink>
-				    	</li> */}
+				    	</li>=
 				    	<li className="nav-item">
 				    		<NavLink className="nav-link" to="/favorites">Favorites</NavLink>
 				    	</li>
 			    	</ul>
 		    	</div>
 	    	</nav>
+
+			<ReactNotification />
 	    	<Switch>
 	    		<Route path="/" exact={true} component={Home} />
 	    		<Route path="/mars" exact={true} component={MarsRover}/>

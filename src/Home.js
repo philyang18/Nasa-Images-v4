@@ -5,6 +5,7 @@ import Loading from './Loading';
 import Iframe from 'react-iframe';
 import thumbnail from './images/play-thumbnail.jpeg';
 
+import { store } from 'react-notifications-component';
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class Home extends React.Component {
@@ -15,8 +16,8 @@ export default class Home extends React.Component {
 			previousSeven: [],
 			loading: false,
 			description: '',
-			hideDescription: 'hide-description',
-			hideButton: 'show-description', 
+			descriptionSection: 'hide-description',
+			descriptionButton: 'show-description', 
 			overRequested: false,
 			liked: false
         };
@@ -25,7 +26,6 @@ export default class Home extends React.Component {
 		this.setState( { loading: true });
 		// const apod = await fetchAPOD("2019-10-1");
 		const apod = await fetchAPOD();
-		console.log(apod);
 		if (apod.error) {
 			this.setState({ overRequested: true });
 		} else {
@@ -63,8 +63,7 @@ export default class Home extends React.Component {
 			}
 			this.checkIfLiked(apod);
 			this.setState({ loading: false, description: apod.explanation});
-			console.log(this.state.previousSeven);
-			
+			// console.log(this.state.previousSeven);
 		}
 	}
 	checkIfLiked = async (photo) => {
@@ -84,8 +83,11 @@ export default class Home extends React.Component {
 			this.checkIfLiked( photo );
 		}
 	} 
-	handleButtonClick = () => {
-		this.setState({ hideDescription: "show-description", hideButton: "hide-description"});
+	showDescription = () => {
+		this.setState({ descriptionSection: "show-description", descriptionButton: "hide-description"});
+	}
+	hideDescription = () => {
+		this.setState({ descriptionSection: "hide-description", descriptionButton: "show-description"});
 	}
 	toggleLike = async () => {
 		const urlComponents = this.state.apod.hdurl.split('/');
@@ -103,10 +105,39 @@ export default class Home extends React.Component {
 					api: "apod"
 				})
 			});
+			store.addNotification({
+				id: id,
+				title: "ADDED",
+				message: "Added photo to favorites!",
+				type: "success",
+				insert: "top",
+				container: "top-right",
+				animationIn: ["animated", "fadeIn"],
+				animationOut: ["animated", "fadeOut"],
+				dismiss: {
+				  duration: 750,
+				  onScreen: true
+				}
+			});
 		}
 		else {
 			await fetch(`${API}/apod/${id}`, {
 				method: 'DELETE'
+			});
+			store.removeNotification(id);
+			store.addNotification({
+				id: id,
+				title: "REMOVED",
+				message: "Removed photo to favorites!",
+				type: "success",
+				insert: "top",
+				container: "top-right",
+				animationIn: ["animated", "fadeIn"],
+				animationOut: ["animated", "fadeOut"],
+				dismiss: {
+				  duration: 750,
+				  onScreen: true
+				}
 			});
 		}
 		this.setState({ liked: !this.state.liked });
@@ -123,14 +154,15 @@ export default class Home extends React.Component {
 	}
     render() {
 		if(this.state.description !== this.state.apod.explanation) {
-			this.setState({ hideDescription: "hide-description", hideButton: "show-description", description: this.state.apod.explanation});
+			this.setState({ descriptionSection: "hide-description", descriptionButton: "show-description", description: this.state.apod.explanation});
 		}
         return(
 			<div id="homePage"> 
 				{this.state.overRequested ? <div>Too many requests to Nasa API</div> :
 					<div> 
 						<div className="container">
-							<h1 className="page-title">NASA Photo of the Day</h1>		
+							<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Photo of the Day</div></h1>	
+							<h1 className="page-title d-none d-md-block">NASA Photo of the Day</h1>		
 							{this.state.loading ? <Loading/> : 
 								<div className="row">
 									<div id="main-image" className="col-lg-9 col-md-9 col-sm-12">
@@ -142,18 +174,18 @@ export default class Home extends React.Component {
 											}
 										</div>
 										<div className="col-12 apod-details">
-											<div className="icon-holder" onClick={this.toggleLike}>
+											<p className="icon-holder" onClick={this.toggleLike}>
 												<img
 													src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
 													className="heart-icon"
 													alt="heart icon"
 												/>
-											</div>
+											</p>
 											<p id="apod-date">{formatDisplayDate(this.state.apod.date)}</p>
 											<p><strong>{this.state.apod.title}</strong></p>
-											<p id="apod-description-button" className={`${this.state.hideButton} d-xs-block d-md-none`} onClick={this.handleButtonClick}>Click to Read Description...</p>
-											<div className="d-xs-block d-md-none">
-												<p className={this.state.hideDescription}>{this.state.description}</p>
+											<p id="apod-description-button" className={`${this.state.descriptionButton} d-xs-block d-md-none`} onClick={this.showDescription}>Click to Read Description...</p>
+											<div className="d-xs-block d-md-none" onClick={this.hideDescription}>
+												<p className={this.state.descriptionSection} >{this.state.description}</p>
 											</div>
 											<p className="d-none d-md-block">{this.state.apod.explanation}</p>
 											{this.state.apod.copyright ? 
