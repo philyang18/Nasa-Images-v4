@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { formatDisplayDate } from './Formatting';
 import { fetchRover, fetchAPOD } from './NasaAPIs';
 import CommentBox from './CommentBox';
+import { updateCommentNotification, deleteCommentNotification} from './Notifications';
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class EditFavorite extends React.Component {
@@ -17,7 +18,7 @@ export default class EditFavorite extends React.Component {
             photo: {},
             rawPhoto: {},
             liked: true,
-            comment: 'Click to add a comment'
+            comment: ''
         };
     }
     componentDidMount = async () => {
@@ -25,8 +26,9 @@ export default class EditFavorite extends React.Component {
         let response = await fetch(`${API}/${this.state.id}`);
         if (response.status === 200) {
             const json = await response.json();
+            console.log(json.comment === "\n\n");
             this.setState({ idExists: true, photo: json });
-            if(json.comment === "" || !json.comment) {
+            if(json.comment === "" || !json.comment || json.comment === "\n" || json.comment === "\n\n" ) {
                 this.setState({ comment: 'Click to add a comment' }); 
             } else {
                 this.setState({ comment: json.comment });
@@ -36,6 +38,9 @@ export default class EditFavorite extends React.Component {
                 rawPhoto.map(photo => {
                     if(photo.id === json.array_id){
                         this.setState({ rawPhoto: photo });
+                        return 0;
+                    } else {
+                        return -1;
                     }
                 });
             } else {
@@ -73,6 +78,15 @@ export default class EditFavorite extends React.Component {
     }
     handleCommentUpdate = async (newComment) => {
         const id = this.state.photo.id;
+        if (newComment === "\n" || newComment === ' ' || newComment == '\n\n') {
+            newComment = "";
+            deleteCommentNotification(id);
+        } else {
+            updateCommentNotification(id);
+        }
+        this.setState({ comment: 'Click to add a comment' });
+
+        
         if(this.state.photo.api === "mars") {
             await fetch(`${API}/mars/${id}`, {
                 method: 'PUT',
@@ -94,11 +108,7 @@ export default class EditFavorite extends React.Component {
                 })
             });
         }
-        if (newComment === "") {
-            this.setState({ comment: 'Click to add a comment'});
-        } else {
-            this.setState({ comment: newComment });
-        }
+        
     }
 
     render() {

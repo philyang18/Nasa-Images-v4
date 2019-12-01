@@ -124,9 +124,9 @@ export default class MarsRover extends React.Component {
 											<div className="row photo-section">
 												{this.state.photos.map(photo => {
 													return (
-														<div className="mars-photo col-lg-3 col-md-4 col-sm-6">
+														<div className="mars-photo col-lg-3 col-md-4 col-sm-6" key={photo.id}>
 															<NavLink to={`/mars/earth_date=${photo.earth_date}&photo_id=${photo.id}`}>
-																<img src={photo.img_src} key={photo.id} alt={photo.camera.full_name}/>
+																<img src={photo.img_src} alt={photo.camera.full_name}/>
 															</NavLink>
 														</div>
 													);

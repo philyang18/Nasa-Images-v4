@@ -28,7 +28,7 @@ export default class App extends React.Component {
 				    	</li>
 				    	<li className="nav-item">
 				    		<NavLink className="nav-link" to="/mars">Mars</NavLink>
-				    	</li>=
+				    	</li>
 				    	<li className="nav-item">
 				    		<NavLink className="nav-link" to="/favorites">Favorites</NavLink>
 				    	</li>

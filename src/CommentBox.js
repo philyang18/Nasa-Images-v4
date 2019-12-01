@@ -23,15 +23,18 @@ export default class CommentBox extends React.Component {
         });
     }
     handleKeyUp = (event) => {
+        console.log(event);
         const { keyCode } = event;
         const { currentValue } = this.state;
-
         if (keyCode === ENTER_KEY || keyCode === ESCAPE_KEY) {
             this.setState({ editMode: false });
         }
 
         if (keyCode === ENTER_KEY) {
             this.props.onEnter(currentValue);
+            if(currentValue === "" || currentValue === "\n") {
+                this.setState({ currentValue: 'Click to add a comment'})
+            }
         } else if (keyCode === ESCAPE_KEY) {
             this.setState({
             currentValue: this.props.value
@@ -52,7 +55,8 @@ export default class CommentBox extends React.Component {
             );
         }
         return (
-            <p id="comment-box" class="col-lg-6 col-md-6 col-sm-12" onClick={this.enableEditMode}>
+
+            <p id="comment-box" className="col-lg-6 col-md-6 col-sm-12" onClick={this.enableEditMode}>
                 {this.props.value}
             </p>
         );

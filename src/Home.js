@@ -4,8 +4,8 @@ import { formatDisplayDate } from './Formatting';
 import Loading from './Loading';
 import Iframe from 'react-iframe';
 import thumbnail from './images/play-thumbnail.jpeg';
+import { addPhotoNotification, removePhotoNotification } from './Notifications';
 
-import { store } from 'react-notifications-component';
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class Home extends React.Component {
@@ -63,7 +63,6 @@ export default class Home extends React.Component {
 			}
 			this.checkIfLiked(apod);
 			this.setState({ loading: false, description: apod.explanation});
-			// console.log(this.state.previousSeven);
 		}
 	}
 	checkIfLiked = async (photo) => {
@@ -102,43 +101,17 @@ export default class Home extends React.Component {
 					id: id,
 					url: this.state.apod.hdurl,
 					date: this.state.apod.date,
-					api: "apod"
+					api: "apod",
+					comment: ""
 				})
 			});
-			store.addNotification({
-				id: id,
-				title: "ADDED",
-				message: "Added photo to favorites!",
-				type: "success",
-				insert: "top",
-				container: "top-right",
-				animationIn: ["animated", "fadeIn"],
-				animationOut: ["animated", "fadeOut"],
-				dismiss: {
-				  duration: 750,
-				  onScreen: true
-				}
-			});
+			addPhotoNotification(id);
 		}
 		else {
 			await fetch(`${API}/apod/${id}`, {
 				method: 'DELETE'
 			});
-			store.removeNotification(id);
-			store.addNotification({
-				id: id,
-				title: "REMOVED",
-				message: "Removed photo to favorites!",
-				type: "success",
-				insert: "top",
-				container: "top-right",
-				animationIn: ["animated", "fadeIn"],
-				animationOut: ["animated", "fadeOut"],
-				dismiss: {
-				  duration: 750,
-				  onScreen: true
-				}
-			});
+			removePhotoNotification(id);
 		}
 		this.setState({ liked: !this.state.liked });
 	}

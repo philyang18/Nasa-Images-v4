@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import ErrorPage  from './ErrorPage';
 import Loading from './Loading';
 import { formatDisplayDate } from './Formatting';
-
+import { addPhotoNotification, removePhotoNotification } from './Notifications';
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class SingeImage extends React.Component {
@@ -44,7 +44,7 @@ export default class SingeImage extends React.Component {
 		const urlComponents = this.state.photo.img_src.split('/');
 		const id = urlComponents[urlComponents.length - 1];
         const image = await fetchMarsFavorites(id);
-		if (image === 404 || image === 400) {
+		if (image === 404 ) {
 			this.setState({ liked: false });
 		} else {
 			this.setState({ liked: true });
@@ -64,14 +64,17 @@ export default class SingeImage extends React.Component {
                     url: this.state.photo.img_src,
                     date: this.state.photo.earth_date,
                     api: "mars",
-                    array_id: this.state.photo.id
+                    array_id: this.state.photo.id,
+                    comment: ""
 				})
-			});
+            });
+            addPhotoNotification(id);
 		}
 		else {
 			await fetch(`${API}/mars/${id}`, {
 				method: 'DELETE'
-			});
+            });
+            removePhotoNotification(id);
 		}
 		this.setState({ liked: !this.state.liked });
 	}
