@@ -5,7 +5,9 @@ import { NavLink } from 'react-router-dom';
 import { formatDisplayDate } from './Formatting';
 import { fetchRover, fetchAPOD } from './NasaAPIs';
 import CommentBox from './CommentBox';
-import { updateCommentNotification, deleteCommentNotification} from './Notifications';
+import { removePhotoNotification, updateCommentNotification, deleteCommentNotification} from './Notifications';
+import PopupWarning from './PopupWarning';
+
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class EditFavorite extends React.Component {
@@ -18,7 +20,9 @@ export default class EditFavorite extends React.Component {
             photo: {},
             rawPhoto: {},
             liked: true,
-            comment: ''
+            comment: 'Click to add a comment',
+            deleteConfirmed: false,
+            hidePopup: true,
         };
     }
     componentDidMount = async () => {
@@ -26,10 +30,10 @@ export default class EditFavorite extends React.Component {
         let response = await fetch(`${API}/${this.state.id}`);
         if (response.status === 200) {
             const json = await response.json();
-            console.log(json.comment === "\n\n");
+            // console.log(json.date);
             this.setState({ idExists: true, photo: json });
-            if(json.comment === "" || !json.comment || json.comment === "\n" || json.comment === "\n\n" ) {
-                this.setState({ comment: 'Click to add a comment' }); 
+            if(!json.comment || !json.comment.trim() ) {      
+                this.setState({ comment: '' }); 
             } else {
                 this.setState({ comment: json.comment });
             }
@@ -64,35 +68,34 @@ export default class EditFavorite extends React.Component {
                 method: 'DELETE'
             });
         }
-		this.setState({ liked: !this.state.liked });
-	}
+        this.setState({ liked: !this.state.liked });
+        removePhotoNotification(id);
+        this.setState({ hidePopup: true });
+    }
+    
 	lastTap = null;
 	handleDoubleTap = () => {
 		const now = Date.now();
 		const DOUBLE_PRESS_DELAY = 300;
 		if (this.lastTap && (now - this.lastTap) < DOUBLE_PRESS_DELAY) {
-			this.toggleLike();
+            this.openWarning();
 		} else {
 			this.lastTap = now;
 		}
     }
     handleCommentUpdate = async (newComment) => {
         const id = this.state.photo.id;
-        if (newComment === "\n" || newComment === ' ' || newComment == '\n\n') {
+        if (!newComment.trim()) {
             newComment = "";
             deleteCommentNotification(id);
         } else {
             updateCommentNotification(id);
         }
-        this.setState({ comment: 'Click to add a comment' });
-
-        
+        this.setState({ comment: newComment });
         if(this.state.photo.api === "mars") {
             await fetch(`${API}/mars/${id}`, {
                 method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json "
-                },
+                headers: {"Content-Type": "application/json "},
                 body: JSON.stringify({
                     comment: newComment
                 })
@@ -100,20 +103,27 @@ export default class EditFavorite extends React.Component {
         } else {
             await fetch(`${API}/apod/${id}`, {
                 method: 'PUT',
-                headers: {
-                "Content-Type": "application/json "
-                },
+                headers: { "Content-Type": "application/json " },
                 body: JSON.stringify({
                     comment: newComment
                 })
             });
         }
-        
     }
-
+    openWarning = () => {
+        this.setState({ hidePopup: false });
+    }
+    handleWarning = (option) => {
+        if (option === "ok") {
+            this.toggleLike();
+        } else {
+            this.setState({ hidePopup: true });
+        }
+    }
     render() {
         return (
             <div id="singlePhotoPage">
+                <PopupWarning hide={this.state.hidePopup} text="Remove from Favorites?" id={this.state.photo.id} redirectUrl={"/favorites"} handlePopup={this.handleWarning}/>
                 {this.state.loading ? <Loading /> :
                     <div>
                         {this.state.idExists === false ? <ErrorPage url={this.props.location.pathname} /> :
@@ -144,8 +154,7 @@ export default class EditFavorite extends React.Component {
                                                         alt="heart icon"
                                                     />
                                                 </div> */}
-                                                
-                                                <p className="icon-holder" onClick={this.toggleLike}>
+                                                <p className="icon-holder" onClick={this.openWarning}>
                                                     <img
                                                         src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
                                                         className="heart-icon"
@@ -171,7 +180,7 @@ export default class EditFavorite extends React.Component {
                                 {this.state.photo.api === "apod" ? 
                                     <div>
                                         <div className="col-12 apod-details">
-                                            <p className="icon-holder" onClick={this.toggleLike}>
+                                            <p className="icon-holder" onClick={this.openWarning}>
                                                 <img
                                                     src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
                                                     className="heart-icon"
@@ -183,8 +192,7 @@ export default class EditFavorite extends React.Component {
                                         </div>
                                         
                                     </div> : <div/>
-                                }
-                                            
+                                }           
                             </div>      
                         }
                     </div>

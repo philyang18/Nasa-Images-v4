@@ -3,7 +3,8 @@ import { fetchAPOD, fetchApodFavorites } from './NasaAPIs';
 import { formatDisplayDate } from './Formatting';
 import Loading from './Loading';
 import Iframe from 'react-iframe';
-import thumbnail from './images/play-thumbnail.jpeg';
+// import thumbnail from './images/play-thumbnail.png';
+import thumbnail from './images/galaxy.jpg';
 import { addPhotoNotification, removePhotoNotification } from './Notifications';
 
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
@@ -26,6 +27,7 @@ export default class Home extends React.Component {
 		this.setState( { loading: true });
 		// const apod = await fetchAPOD("2019-10-1");
 		const apod = await fetchAPOD();
+		console.log(apod);
 		if (apod.error) {
 			this.setState({ overRequested: true });
 		} else {
@@ -61,11 +63,15 @@ export default class Home extends React.Component {
 				this.state.previousSeven.push([]);
 				this.state.previousSeven[i].push( await fetchAPOD(newDate) );
 			}
-			this.checkIfLiked(apod);
+			if(apod.media_type !== "video") {
+				this.checkIfLiked(apod);
+			}
+			
 			this.setState({ loading: false, description: apod.explanation});
 		}
 	}
 	checkIfLiked = async (photo) => {
+
 		const urlComponents = photo.hdurl.split('/');
 		const id = urlComponents[urlComponents.length - 1];
 		const image = await fetchApodFavorites(id);
@@ -79,7 +85,9 @@ export default class Home extends React.Component {
 		window.scrollTo(0, 0)
 		if(photo.date !== this.state.apod.date) {
 			this.setState({ apod: photo });
-			this.checkIfLiked( photo );
+			if(photo.media_type !== "video") {
+				this.checkIfLiked( photo );
+			}
 		}
 	} 
 	showDescription = () => {
@@ -143,17 +151,19 @@ export default class Home extends React.Component {
 										<div className="col-12">
 											{this.state.apod.media_type !== "video" ?
 												<img src={this.state.apod.hdurl} onClick={this.handleDoubleTap} alt={this.state.apod.title}/> :
-												<Iframe src={this.state.apod.hdurl} width="100%"frameBorder="0" allowFullScreen/>
+												<Iframe src={this.state.apod.url} width="100%"frameBorder="0" allowFullScreen/>
 											}
 										</div>
 										<div className="col-12 apod-details">
-											<p className="icon-holder" onClick={this.toggleLike}>
-												<img
-													src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
-													className="heart-icon"
-													alt="heart icon"
-												/>
-											</p>
+											{this.state.apod.media_type !== "video" ? 
+												<p className="icon-holder" onClick={this.toggleLike}>
+													<img
+														src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
+														className="heart-icon"
+														alt="heart icon"
+													/>
+												</p> : <p/>
+											}
 											<p id="apod-date">{formatDisplayDate(this.state.apod.date)}</p>
 											<p><strong>{this.state.apod.title}</strong></p>
 											<p id="apod-description-button" className={`${this.state.descriptionButton} d-xs-block d-md-none`} onClick={this.showDescription}>Click to Read Description...</p>

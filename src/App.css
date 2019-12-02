@@ -41,10 +41,11 @@
 	text-align: center;
 	font-size: 25px;
 }
-#mars-title-section {
+/* #mars-title-section {
+	font-family: 'Arvo', serif !important; 
 	margin-top: 50px;
 	margin-bottom: 50px;
-}
+} */
 
 /* Used for favorites as well */
 .photo-container {
@@ -123,6 +124,8 @@ a.active {
 	text-align: center;
 	margin: 50px auto 50px auto;
 	font-size: 70px;
+	/* font-family: 'Cabin', serif !important;  */
+	font-family: 'Oswald', sans-serif !important;
 }
 .apod-details {
 	width: 95%;
@@ -211,8 +214,48 @@ a.active {
 	}
 }
 
-
-
+/* =================Loader=============== */
+.popup {  
+	position: fixed;  
+	width: 100 !important;  
+	height: 100%;  
+	top: 0;  
+	left: 0;  
+	right: 0;  
+	bottom: 0;  
+	margin: 0;  
+	background-color: rgba(0,0,0, 0.5);  
+	z-index: 1;
+}  
+.popup-inner {  
+	position: absolute;  
+	left: 25%;  
+	right: 25%;  
+	top: 25%;  
+	bottom: 25%;  
+	margin: auto;  
+	border-radius: 20px;  
+	background: white; 
+	display: flex;
+	align-content: center;
+	text-align: center;
+}
+.popup-button-holder {
+	margin: auto;
+	width: 100%;
+}
+.popup-button {
+	width: 25% !important;
+	margin: 40px 20px 10px 20px;
+	border-radius: 20px;  
+	background-color: lightgrey;
+}
+.hide-popup {
+	display: none;
+}
+.show-popup {
+	display: block;
+}
 
 
 

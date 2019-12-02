@@ -9,8 +9,15 @@ export default class CommentBox extends React.Component {
         super(props);
         this.state = {
             currentValue: props.value,
-            editMode: false
+            editMode: false,
+            defaultText: 'Click to add a comment',
+            default: false
         };
+    }
+    componentDidMount = () => {
+        if(this.props.value === "" || !this.props.value || this.props.value === "\n") {
+            this.setState({ default: true });
+        }
     }
     enableEditMode = () => {
         this.setState({
@@ -31,16 +38,19 @@ export default class CommentBox extends React.Component {
         }
 
         if (keyCode === ENTER_KEY) {
-            this.props.onEnter(currentValue);
-            if(currentValue === "" || currentValue === "\n") {
-                this.setState({ currentValue: 'Click to add a comment'})
+            if(!currentValue.trim()) {
+                this.setState({ default: true, currentValue: '' });
+            } else {
+                this.setState({ default: false });
             }
+            this.props.onEnter(currentValue);
         } else if (keyCode === ESCAPE_KEY) {
             this.setState({
             currentValue: this.props.value
             });
         }
     }
+    
     render() {
         if (this.state.editMode) {
             return (
@@ -54,12 +64,19 @@ export default class CommentBox extends React.Component {
                 />
             );
         }
-        return (
-
-            <p id="comment-box" className="col-lg-6 col-md-6 col-sm-12" onClick={this.enableEditMode}>
-                {this.props.value}
-            </p>
-        );
+        if (this.state.default) {
+            return (
+                <p id="comment-box" className="col-lg-6 col-md-6 col-sm-12" onClick={this.enableEditMode}>
+                    {this.state.defaultText}
+                </p>
+            );
+        } else {
+            return (
+                <p id="comment-box" className="col-lg-6 col-md-6 col-sm-12" onClick={this.enableEditMode}>
+                    {this.props.value}
+                </p>
+            );
+        }
     }
 }
 

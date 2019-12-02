@@ -16,6 +16,7 @@ export default class App extends React.Component {
   render () {
     return (
     	<Router id="appPage">
+			<ReactNotification />
 	    	<nav id="navigation-bar" className="navbar navbar-expand-lg navbar-dark bg-dark">
 		    	<a className="navbar-brand disabled" href="#">NASA Images</a>
 		    	<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +36,6 @@ export default class App extends React.Component {
 			    	</ul>
 		    	</div>
 	    	</nav>
-
-			<ReactNotification />
 	    	<Switch>
 	    		<Route path="/" exact={true} component={Home} />
 	    		<Route path="/mars" exact={true} component={MarsRover}/>
