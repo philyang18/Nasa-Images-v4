@@ -264,7 +264,7 @@ iframe {
   width: 100%;
 }
 .popup-button {
-  width: 25% !important;
+  width: 25%;
   margin: 40px 20px 10px 20px;
   border-radius: 20px;
   background-color: lightgrey;
@@ -283,7 +283,8 @@ iframe {
     bottom: 15%;
   }
   .popup-button {
-    width: 40%;
+    width: 45%;
+    margin: 40px 10px 10px 10px;
   }
 }
 
