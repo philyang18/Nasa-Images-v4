@@ -21,17 +21,15 @@ export default class Home extends React.Component {
 			description: '',
 			descriptionSection: 'hide-description',
 			descriptionButton: 'show-description', 
-			overRequested: false,
+			overRequestedAPIAPI: false,
 			liked: false
 		};
 	}
 	componentDidMount = async () => {
 		this.setState( { loading: true });
-		// const apod = await fetchAPOD("2019-10-1");
 		const apod = await fetchAPOD();
-		console.log(apod);
 		if (apod.error) {
-			this.setState({ overRequested: true });
+			this.setState({ overRequestedAPI: true });
 		} else {
 			this.setState({ apod });
 			this.state.previousSeven.push([]);
@@ -143,7 +141,7 @@ export default class Home extends React.Component {
         return(
 			<DocumentTitle title="NASA Images">
 				<div id="homePage"> 
-					{this.state.overRequested ? <div>Too many requests to Nasa API</div> :
+					{this.state.overRequestedAPIAPI ? <div>Too many requests to Nasa API</div> :
 						<div> 
 							<div className="container">
 								<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Photo of the Day</div></h1>	

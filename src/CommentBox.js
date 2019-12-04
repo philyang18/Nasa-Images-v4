@@ -12,7 +12,7 @@ export default class CommentBox extends React.Component {
       editMode: false,
       defaultText: "Click to add a comment",
       default: false,
-      showError: false
+      showSaveError: false
     };
   }
   componentDidMount = () => {
@@ -35,7 +35,7 @@ export default class CommentBox extends React.Component {
     });
     if (event.target.value.length <= 150) {
       this.setState({
-        showError: false
+        showSaveError: false
       });
     }
   };
@@ -69,7 +69,7 @@ export default class CommentBox extends React.Component {
     if (keyCode === ENTER_KEY) {
       window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth' });
       
-      this.setState({ showError: true });
+      this.setState({ showSaveError: true });
     }
   };
   // removes a newline when hitting enter
@@ -102,7 +102,7 @@ export default class CommentBox extends React.Component {
               );
             }}
           </RemainingCharacters>
-          {this.state.showError ? <div data-testid="form-validation" className="text-danger">Cannot save!</div> : <div /> }
+          {this.state.showSaveError ? <div data-testid="form-validation" className="text-danger">Cannot save!</div> : <div /> }
         </div>
       );
     }
