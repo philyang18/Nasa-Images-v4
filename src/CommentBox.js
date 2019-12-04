@@ -67,6 +67,8 @@ export default class CommentBox extends React.Component {
 
     }
     if (keyCode === ENTER_KEY) {
+      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth' });
+      
       this.setState({ showError: true });
     }
   };

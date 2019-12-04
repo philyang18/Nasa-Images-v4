@@ -4,7 +4,6 @@ import { formatDisplayDate } from './Formatting';
 import Loading from './Loading';
 import Iframe from 'react-iframe';
 // import thumbnail from './images/play-thumbnail.png';
-import { ScrollTo, ScrollArea } from "react-scroll-to";
 import thumbnail from './images/galaxy.jpg';
 import { addPhotoNotification, removePhotoNotification } from './Notifications';
 import DocumentTitle from "react-document-title";
@@ -17,13 +16,14 @@ export default class Home extends React.Component {
         this.state ={
 			apod: [],
 			previousSeven: [],
+			todaysDate: '',
 			loading: false,
 			description: '',
 			descriptionSection: 'hide-description',
 			descriptionButton: 'show-description', 
 			overRequested: false,
 			liked: false
-        };
+		};
 	}
 	componentDidMount = async () => {
 		this.setState( { loading: true });
@@ -36,7 +36,7 @@ export default class Home extends React.Component {
 			this.setState({ apod });
 			this.state.previousSeven.push([]);
 			this.state.previousSeven[0].push(apod);
-			this.setState( { mainLoading: false });
+			this.setState( { mainLoading: false, todaysDate: apod.date });
 			const currentDate = apod.date;
 			const dateComponents = currentDate.split('-');
 			var year = Number(dateComponents[0]), month = Number(dateComponents[1]), day = Number(dateComponents[2]);
@@ -84,7 +84,7 @@ export default class Home extends React.Component {
 		}
 	}
 	handleClick = (photo) => {
-		window.scrollTo(0, 0)
+		window.scrollTo({top: 240, left: 0, behavior: 'smooth' });
 		if(photo.date !== this.state.apod.date) {
 			this.setState({ apod: photo });
 			if(photo.media_type !== "video") {
@@ -135,69 +135,67 @@ export default class Home extends React.Component {
 			this.lastTap = now;
 		}
 	}
+	
     render() {
 		if(this.state.description !== this.state.apod.explanation) {
 			this.setState({ descriptionSection: "hide-description", descriptionButton: "show-description", description: this.state.apod.explanation});
 		}
         return(
 			<DocumentTitle title="NASA Images">
-				<ScrollTo>
-				{({ scrollTo }) => (
-					<div id="homePage"> 
-						{this.state.overRequested ? <div>Too many requests to Nasa API</div> :
-							<ScrollArea id="home-container"> 
-								<div className="container">
-									<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Photo of the Day</div></h1>	
-									<h1 className="page-title d-none d-md-block">NASA Photo of the Day</h1>		
-									{this.state.loading ? <Loading/> : 
-										<div className="row">
-											<div id="main-image" className="col-lg-9 col-md-9 col-sm-12">
-												<h3 className="column-title col-12"><strong>Today</strong></h3>
-												<div className="col-12">
-													{this.state.apod.media_type !== "video" ?
-														<img src={this.state.apod.hdurl} onClick={this.handleDoubleTap} alt={this.state.apod.title}/> :
-														<Iframe src={this.state.apod.url} width="100%"frameBorder="0" allowFullScreen/>
-													}
-												</div>
-												<div className="col-12 apod-details">
-													{this.state.apod.media_type !== "video" ? 
-														<p className="icon-holder" onClick={this.toggleLike}>
-															<img
-																src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
-																className="heart-icon"
-																alt="heart icon"
-															/>
-														</p> : <p/>
-													}
-													<p id="apod-date">{formatDisplayDate(this.state.apod.date)}</p>
-													<p><strong>{this.state.apod.title}</strong></p>
-													<p id="apod-description-button" className={`${this.state.descriptionButton} d-xs-block d-md-none`} onClick={this.showDescription}>Click to Read Description...</p>
-													<div className="d-xs-block d-md-none" onClick={this.hideDescription}>
-														<p className={this.state.descriptionSection} >{this.state.description}</p>
-													</div>
-													<p className="d-none d-md-block">{this.state.apod.explanation}</p>
-													{this.state.apod.copyright ? 
-														<p>Credit: {this.state.apod.copyright}</p> : <p></p>
-													}
-												</div>
+				<div id="homePage"> 
+					{this.state.overRequested ? <div>Too many requests to Nasa API</div> :
+						<div> 
+							<div className="container">
+								<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Photo of the Day</div></h1>	
+								<h1 className="page-title d-none d-md-block">NASA Photo of the Day</h1>		
+								{this.state.loading ? <Loading/> : 
+									<div className="row">
+										<div id="main-image" className="col-lg-9 col-md-9 col-sm-12">
+											<h3 className="column-title col-12"><strong>{this.state.todaysDate === this.state.apod.date ? "Today" : formatDisplayDate(this.state.apod.date)}</strong></h3>
+											<div className="col-12">
+												{this.state.apod.media_type !== "video" ?
+													<img src={this.state.apod.hdurl} onClick={this.handleDoubleTap} alt={this.state.apod.title}/> :
+													<Iframe src={this.state.apod.url} width="100%"frameBorder="0" allowFullScreen/>
+												}
 											</div>
-											<div id="previous-image-column" className="col-lg-3 col-md-3 col-sm-12">
-												<h3 className="column-title col-12"><strong>Last 7 Days</strong></h3>
-												{this.state.previousSeven.map(last => {
-													return (
-														<img src={last[0].media_type === "video" ? thumbnail : last[0].hdurl} className={this.state.apod.date === last[0].date ? "col-12 previous-image active" : "col-12 previous-image"} onClick={() => {this.handleClick(last[0])}} alt={last[0].title} />
-													);
-												})}
+											<div className="col-12 apod-details">
+												{this.state.apod.media_type !== "video" ? 
+													<p className="icon-holder" onClick={this.toggleLike}>
+														<img
+															src={this.state.liked ? require('./images/filledHeart.png') : require('./images/emptyHeart.png')}
+															className="heart-icon"
+															alt="heart icon"
+														/>
+													</p> : <p/>
+												}
+												<p id="apod-date">{formatDisplayDate(this.state.apod.date)}</p>
+												<p><strong>{this.state.apod.title}</strong></p>
+												<p id="apod-description-button" className={`${this.state.descriptionButton} d-xs-block d-md-none`} onClick={this.showDescription}>Click to Read Description...</p>
+												<div className="d-xs-block d-md-none" onClick={this.hideDescription}>
+													<p className={this.state.descriptionSection} >{this.state.description}</p>
+												</div>
+												<p className="d-none d-md-block">{this.state.apod.explanation}</p>
+												{this.state.apod.copyright ? 
+													<p>Credit: {this.state.apod.copyright}</p> : <p></p>
+												}
 											</div>
 										</div>
-									}
-								</div>
-								
-							</ScrollArea>
-						}
-					</div>
-				)}
-				</ScrollTo>
+										<div id="previous-image-column" className="col-lg-3 col-md-3 col-sm-12">
+											<h3 className="column-title col-12"><strong>Last 7 Days</strong></h3>
+											{this.state.previousSeven.map(last => {
+												return (
+													<img src={last[0].media_type === "video" ? thumbnail : last[0].hdurl} className={this.state.apod.date === last[0].date ? "col-12 previous-image active" : "col-12 previous-image"} onClick={() => {this.handleClick(last[0])}} alt={last[0].title} />
+												);
+												
+											})}
+										</div>
+									</div>
+								}
+							</div>
+							
+						</div>
+					}
+				</div>
 			</DocumentTitle>
         );
     }
