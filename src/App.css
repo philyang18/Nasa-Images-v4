@@ -275,6 +275,17 @@ iframe {
 .show-popup {
   display: block;
 }
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .popup-inner {
+    left: 15%;
+    right: 15%;
+    top: 15%;
+    bottom: 15%;
+  }
+  .popup-button {
+    width: 40%;
+  }
+}
 
 /* =================Loader=============== */
 
