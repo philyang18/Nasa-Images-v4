@@ -4,8 +4,10 @@ import { formatDisplayDate } from './Formatting';
 import Loading from './Loading';
 import Iframe from 'react-iframe';
 // import thumbnail from './images/play-thumbnail.png';
+import { ScrollTo, ScrollArea } from "react-scroll-to";
 import thumbnail from './images/galaxy.jpg';
 import { addPhotoNotification, removePhotoNotification } from './Notifications';
+import DocumentTitle from "react-document-title";
 
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
@@ -138,6 +140,7 @@ export default class Home extends React.Component {
 			this.setState({ descriptionSection: "hide-description", descriptionButton: "show-description", description: this.state.apod.explanation});
 		}
         return(
+			<DocumentTitle title="NASA Images">
 			<div id="homePage"> 
 				{this.state.overRequested ? <div>Too many requests to Nasa API</div> :
 					<div> 
@@ -209,6 +212,7 @@ export default class Home extends React.Component {
 					</div>
 				}
 			</div>
+			</DocumentTitle>
         );
     }
 }
