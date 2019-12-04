@@ -43,11 +43,11 @@ export default class CommentBox extends React.Component {
     console.log(event);
     const { keyCode } = event;
     const { currentValue } = this.state;
-    if (keyCode === ENTER_KEY || keyCode === ESCAPE_KEY) {
+    if ((keyCode === ENTER_KEY && !event.shiftKey)|| keyCode === ESCAPE_KEY) {
       this.setState({ editMode: false });
     }
 
-    if (keyCode === ENTER_KEY) {
+    if (keyCode === ENTER_KEY && !event.shiftKey) {
       if (!currentValue.trim()) {
         this.setState({ default: true, currentValue: "" });
       } else {
@@ -75,7 +75,6 @@ export default class CommentBox extends React.Component {
   // removes a newline when hitting enter
   handleKeyDown = event => {
     const { keyCode } = event;
-    console.log(keyCode);
     if (keyCode === ENTER_KEY && !event.shiftKey) {
       event.preventDefault();
     }
@@ -86,13 +85,10 @@ export default class CommentBox extends React.Component {
       return (
         <div>
           <textarea
+            data-testid="comment-input"
             id="comment-box-input"
             value={this.state.currentValue}
-            onKeyUp={
-              this.state.currentValue.length <= 150
-                ? this.handleKeyUp
-                : this.handleInvalidKeyUp
-            }
+            onKeyUp={ this.state.currentValue.length <= 150 ? this.handleKeyUp : this.handleInvalidKeyUp }
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
             rows="5"
@@ -100,42 +96,25 @@ export default class CommentBox extends React.Component {
           <RemainingCharacters max={150} text={this.state.currentValue}>
             {remainingCharacters => {
               return (
-                <p
-                  className={
-                    remainingCharacters < 0 ? "text-danger" : undefined
-                  }
-                >
+                <p className={remainingCharacters < 0 ? "text-danger" : undefined}>
                   {remainingCharacters} characters left
                 </p>
               );
             }}
           </RemainingCharacters>
-          {this.state.showError ? (
-            <div className="text-danger">Cannot save!</div>
-          ) : (
-            <div />
-          )}
+          {this.state.showError ? <div data-testid="form-validation" className="text-danger">Cannot save!</div> : <div /> }
         </div>
       );
     }
-    if (this.state.default) {
+    else {
       return (
         <p
+          data-testid="comment-text"
           id="comment-box"
           className="col-lg-6 col-md-6 col-sm-12"
           onClick={this.enableEditMode}
         >
-          {this.state.defaultText}
-        </p>
-      );
-    } else {
-      return (
-        <p
-          id="comment-box"
-          className="col-lg-6 col-md-6 col-sm-12"
-          onClick={this.enableEditMode}
-        >
-          {this.props.value}
+          {this.state.default ? this.state.defaultText : this.props.value}
         </p>
       );
     }

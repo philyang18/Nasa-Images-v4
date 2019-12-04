@@ -1,5 +1,4 @@
 import React from "react";
-import Home from "./PopupWarning";
 import { fireEvent, render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import PopupWarning from "./PopupWarning";
