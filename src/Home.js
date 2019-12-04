@@ -82,7 +82,7 @@ export default class Home extends React.Component {
 		}
 	}
 	handleClick = (photo) => {
-		window.scrollTo({top: 240, left: 0, behavior: 'smooth' });
+		window.scrollTo({top: 240, behavior: 'smooth' });
 		if(photo.date !== this.state.apod.date) {
 			this.setState({ apod: photo });
 			if(photo.media_type !== "video") {
