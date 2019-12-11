@@ -1,7 +1,10 @@
 [![Build Status](https://travis-ci.com/ITP-Webdev/final-project-philyang18.svg?token=JjfsCsZxtpzqdFdxKz9k&branch=master)](https://travis-ci.com/ITP-Webdev/final-project-philyang18)
 
 https://nasa-images.surge.sh
+
 https://www.youtube.com/watch?v=Ei_JcYVaoc0
+
+Backend repo: https://github.com/philyang18/itp404-final-project-api
 
 1. NASA has a plethora of photo and video APIs which are frequently updated but is not accessible to people who do not understand how to use an API. Although NASA has a website for its library of photographs, it is not structured or organized in a manner that appeals to me. Thus the goal for this project is to display NASA's photo in a friendly and organized fashion.
 
