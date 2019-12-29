@@ -2,7 +2,7 @@
 
 https://nasa-images.surge.sh
 
-Backend repo: https://github.com/philyang18/itp404-nasa-images-api
+Backend repo: https://github.com/philyang18/nasa-images-api
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
