@@ -2,8 +2,6 @@
 
 https://nasa-images.surge.sh
 
-https://www.youtube.com/watch?v=Ei_JcYVaoc0
-
 Backend repo: https://github.com/philyang18/itp404-final-project-api
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
