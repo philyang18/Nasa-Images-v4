@@ -6,18 +6,6 @@ https://www.youtube.com/watch?v=Ei_JcYVaoc0
 
 Backend repo: https://github.com/philyang18/itp404-final-project-api
 
-1. NASA has a plethora of photo and video APIs which are frequently updated but is not accessible to people who do not understand how to use an API. Although NASA has a website for its library of photographs, it is not structured or organized in a manner that appeals to me. Thus the goal for this project is to display NASA's photo in a friendly and organized fashion.
-
-2. The primary audience includes (but is not limited to) astronomers, space-lovers, scientists, and students of any age. 
-
-3. In order to meet the project requirements, I plan on using 2 APIs which will each have their own route. The current APIs I plan on using are the Mars Rover and APOD APIs. 
-
-Each image will be a reusable component with a "like" function that allows for the user to create a list of liked photos that will load on a separate page. They can later "unlike" or delete the image from the list. Each of these actions will display a notification on the right-top corner. This page's information will be held using an API and will use all four AJAX calls. 
-
-In addition, users will be able to search for photos taken on certain dates for the Mars Rover API which will require form validation to ensure that the date is formatted correctly or if there no photos for that date.
-
-4. As of now I only plan on using Bootstrap.
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
