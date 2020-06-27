@@ -4,12 +4,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const accountRoute = express.Router();
-const PORT = 80;
+const PORT = 4000;
 
 let Account = require('./account.model');
 
 app.use(cors());
 app.use(bodyParser.json());
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 mongoose.connect('mongodb://127.0.0.1:27017/nasa', { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;

@@ -27,7 +27,6 @@ export default class APOD extends React.Component {
 		};
 	}
 	componentDidMount = async () => {
-		console.log(this.props);
 		this.setState( { loading: true });
 		const apod = await fetchAPOD();
 		if (apod.error) {
@@ -84,7 +83,6 @@ export default class APOD extends React.Component {
 			}
 		}
 		let res = await axios.post(`http://localhost:4000/account/favorites/apod/fetch`, acc);
-		console.log(res);
 		if(res.status !== 200) {
 			this.setState({ liked: false });
 		} else {
@@ -122,12 +120,12 @@ export default class APOD extends React.Component {
 			};
 			axios.put('http://localhost:4000/account/favorites/apod/add', newFav)
 				.then(response => {
-					console.log(response);
+					addPhotoNotification(id);
 				})
 				.catch(err => {
-					console.log(err);
+					// console.log(err);
 				});
-			addPhotoNotification(id);
+			
 		}
 		else if(this.state.liked){
 			axios.delete('http://localhost:4000/account/favorites/apod/delete', {
@@ -140,12 +138,12 @@ export default class APOD extends React.Component {
 				}
 			})
 			.then(response => {
-				console.log(response);
+				removePhotoNotification(id);
 			})
 			.catch(err => {
-				console.log("didn't delete");
+				// console.log("didn't delete");
 			});
-			removePhotoNotification(id);
+			
 		}
 		this.setState({ liked: !this.state.liked });
 	}

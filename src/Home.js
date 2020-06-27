@@ -6,7 +6,6 @@ export default class Home extends React.Component {
         this.state = {
 
         };
-        console.log(this.props);
     }
     render() {
         return(

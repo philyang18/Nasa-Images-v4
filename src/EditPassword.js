@@ -25,12 +25,10 @@ export default class EditPassword extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        console.log(this.props);
         var response = await axios.post('http://localhost:4000/account/login', {
             _id: this.props.location.state.email,
             password: this.state.password
         });
-        console.log(response);
         if(response.status !== 200){
             this.setState({passwordErrorMessage: "Invalid password"});
         }

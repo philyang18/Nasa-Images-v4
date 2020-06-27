@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             showLogin: true,
             password: "",

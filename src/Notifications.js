@@ -74,7 +74,6 @@ export function deleteCommentNotification(props){
 
 export function updatePasswordNotification(props) {
     const { id } = props;
-    console.log("hi");
     store.addNotification({
         id: id,
         title: "UPDATED",

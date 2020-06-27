@@ -78,10 +78,10 @@ export default class EditFavorite extends React.Component {
 				}
 			})
 			.then(response => {
-				console.log(response);
+				// console.log(response);
 			})
 			.catch(err => {
-				console.log("didn't delete");
+				// console.log("didn't delete");
 			});
   
     this.setState({ liked: !this.state.liked });
@@ -107,7 +107,6 @@ export default class EditFavorite extends React.Component {
   };
   handleCommentUpdate = async newComment => {
     const id = this.state.photo._id;
-    console.log(this.state.photo);
     if (!newComment.trim()) {
       newComment = "";
       deleteCommentNotification(id);
