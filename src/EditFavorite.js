@@ -12,12 +12,14 @@ import {
 } from "./Notifications";
 import PopupWarning from "./PopupWarning";
 import DocumentTitle from "react-document-title";
+import axios from 'axios';
 
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 export default class EditFavorite extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       id: this.props.match.params.id,
       idExists: false,
@@ -32,49 +34,66 @@ export default class EditFavorite extends React.Component {
   }
   componentDidMount = async () => {
     this.setState({ loading: true });
-    let response = await fetch(`${API}/${this.state.id}`);
-    if (response.status === 200) {
-      const json = await response.json();
-      this.setState({ idExists: true, photo: json });
-      if (!json.comment || !json.comment.trim()) {
+    
+    const acc = {
+      _id: this.props.location.state.email,
+      data: {
+        _id: this.state.id
+      }
+    }
+    let response = await axios.post(`http://localhost:4000/account/favorites/${this.props.location.state.api}/fetch`, acc);
+    
+    if(response.status === 200) {
+      this.setState({ photo: response.data, idExists: true });
+      if (response.data.comment || !response.data.comment.trim()) {
+        this.setState({ comment: response.data.comment });
+      } else {
         this.setState({ comment: "" });
-      } else {
-        this.setState({ comment: json.comment });
       }
-      if (json.api === "mars") {
-        const rawPhoto = await fetchRover(json.date);
-        rawPhoto.map(photo => {
-          if (photo.id === json.array_id) {
-            this.setState({ rawPhoto: photo });
-            return 0;
-          } else {
-            return -1;
-          }
-        });
-      } else {
-        const rawPhoto = await fetchAPOD(json.date);
+      if(this.props.location.state.api === "apod") {
+        const rawPhoto = await fetchAPOD(response.data.date);
         this.setState({ rawPhoto });
-      }
+      } else {
+        const nasaRes = await fetchRover(response.data.date);
+          nasaRes.map(photo => {
+            if (photo.id === response.data.array_id) {
+              this.setState({ rawPhoto: photo });
+            } 
+          });
+      } 
     } else {
       this.setState({ idExists: false });
     }
     this.setState({ loading: false });
-  };
+  }
+
   toggleLike = async () => {
-    const id = this.state.photo.id;
-    if (this.state.photo.api === "mars") {
-      await fetch(`${API}/mars/${id}`, {
-        method: "DELETE"
-      });
-    } else {
-      await fetch(`${API}/apod/${id}`, {
-        method: "DELETE"
-      });
-    }
+    await axios.delete(`http://localhost:4000/account/favorites/${this.state.photo.api}/delete`, {
+				// for delete, all data must be wrapped in data
+        data: {
+					_id: this.props.location.state.email,
+					data: {
+						_id: this.state.photo._id
+					}
+				}
+			})
+			.then(response => {
+				console.log(response);
+			})
+			.catch(err => {
+				console.log("didn't delete");
+			});
+  
     this.setState({ liked: !this.state.liked });
-    removePhotoNotification(id);
+    removePhotoNotification(this.state.photo._id);
     this.setState({ hidePopup: true });
-  };
+    this.props.history.push({
+      pathname: '/favorites',
+      state: {
+        email: this.props.location.state.email
+      }
+    });
+  }
 
   lastTap = null;
   handleDoubleTap = () => {
@@ -87,7 +106,8 @@ export default class EditFavorite extends React.Component {
     }
   };
   handleCommentUpdate = async newComment => {
-    const id = this.state.photo.id;
+    const id = this.state.photo._id;
+    console.log(this.state.photo);
     if (!newComment.trim()) {
       newComment = "";
       deleteCommentNotification(id);
@@ -95,23 +115,30 @@ export default class EditFavorite extends React.Component {
       updateCommentNotification(id);
     }
     this.setState({ comment: newComment });
-    if (this.state.photo.api === "mars") {
-      await fetch(`${API}/mars/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json " },
-        body: JSON.stringify({
-          comment: newComment
-        })
-      });
-    } else {
-      await fetch(`${API}/apod/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json " },
-        body: JSON.stringify({
-          comment: newComment
-        })
-      });
-    }
+    axios.post(`http://localhost:4000/account/favorites/${this.state.photo.api}/edit`, {
+      _id: this.props.location.state.email,
+      data: {
+        _id: id,
+        comment: newComment
+      }
+    });
+    // if (this.state.photo.api === "mars") {
+    //   await fetch(`${API}/mars/${id}`, {
+    //     method: "PUT",
+    //     headers: { "Content-Type": "application/json " },
+    //     body: JSON.stringify({
+    //       comment: newComment
+    //     })
+    //   });
+    // } else {
+    //   await fetch(`${API}/apod/${id}`, {
+    //     method: "PUT",
+    //     headers: { "Content-Type": "application/json " },
+    //     body: JSON.stringify({
+    //       comment: newComment
+    //     })
+    //   });
+    // }
   };
   openWarning = () => {
     this.setState({ hidePopup: false });
@@ -126,13 +153,12 @@ export default class EditFavorite extends React.Component {
   render() {
     return (
       <DocumentTitle title="Edit Favorite">
-        <div id="singlePhotoPage">
+        <div id="singlePhotoPage" onClick={this.props.onClick}>
           <PopupWarning
             hide={this.state.hidePopup}
             text="Remove from Favorites?"
-            id={this.state.photo.id}
-            redirectUrl={"/favorites"}
             handlePopup={this.handleWarning}
+            email={this.props.location.state.email}
           />
           {this.state.loading ? (
             <Loading />
@@ -143,8 +169,13 @@ export default class EditFavorite extends React.Component {
               ) : (
                 <div className="container">
                   <div className="row">
-                    <NavLink to="/favorites">
-                      <button id="back-button">Back</button>
+                    <NavLink to={{
+                      pathname: "/favorites",
+                      state: {
+                        email: this.props.location.state.email
+                      }
+                    }}>
+                      <a id="back-button" href="" className="btn col-12"><i className="icon-circle-arrow-left"></i></a>
                     </NavLink>
                   </div>
                   <div className="row">

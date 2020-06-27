@@ -92,6 +92,7 @@ export default class CommentBox extends React.Component {
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
             rows="5"
+            autofocus
           />
           <RemainingCharacters max={150} text={this.state.currentValue}>
             {remainingCharacters => {

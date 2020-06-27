@@ -12,8 +12,165 @@
   font-size: 21px;
   font-family: "Dosis", sans-serif !important;
 }
+#navigation-bar a, #navigation-bar a:hover {
+  cursor: pointer;
+  text-decoration: none !important;
+}
 #navigation-bar {
   width: 100%;
+}
+
+#account-btn-holder {
+  background: none;
+  margin-left: auto!important
+}
+#account-btn {
+  text-align: right;
+  border: 2px solid white;
+  border-radius: 50px;
+  outline: none;
+  position: relative;
+  background: none;
+  font: 30px;
+}
+#account-btn i {
+  color: white;
+}
+#user-box {
+  border: 1px solid grey;
+  position: absolute;
+  margin: 15px 10px 0 0;
+  right: -15px;
+  background: white;
+  width: 200px;
+  font-size: 18px;
+}
+#user-box button{
+  border-bottom: 1px solid lightgrey;
+  text-align: left;
+  width: 200px;
+  background: none;
+  border: none;
+  margin: 10px 0 10px;
+  padding-left: 20px;
+}
+#user-box button:focus {
+  outline: none;
+
+}
+.divider {
+  min-height: 2px;
+  width: 100%;
+  margin: auto;
+  border-bottom: 1px solid lightgrey;
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  #account-btn {
+    /* display: block; */
+    display: flex;
+    margin-left: auto !important;
+  }
+  #user-box {
+    margin: 29px 5px 0 0;
+    right: -15px;
+  }
+}
+/*=============== Home =================*/
+#home-page {
+  background: url('./images/home-alt.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  font-family: "Oswald", sans-serif !important;
+  
+}
+
+#home-page h1 {
+  color: white;
+  font-size: 100px;
+  margin-bottom: 50px;
+}
+#home-page h2 {
+  color: #ffffff;
+}
+
+#home-page a:hover {
+  text-decoration: none;
+}
+
+#home-page h2:hover {
+  /* color: rgb(109, 255, 255); */
+  transform: scale(1.2);
+  cursor: pointer;
+  text-decoration: none !important;
+}
+#home-link-container {
+  width: 50%;
+  margin: auto;
+}
+
+/* =================Login Page=============== */
+#login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #343a40;
+  font-family: "Dosis", sans-serif !important;
+
+  background: url('./images/home-alt.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#login-container {
+  margin: auto;
+  max-width: 40%;
+  background: white;
+  border-radius: 20px;
+}
+#login-content {
+  margin: 30px auto 30px auto;
+  width: 85%;
+}
+#login-content h1, h3 {
+  text-align: center;
+}
+#login-content h3 {
+  margin-bottom: 30px;
+}
+#login-content button {
+  display: block;
+  margin-right: 0px;
+  margin-left: auto;
+  margin-top: 25px;
+  width: 100%;
+  
+}
+#login-links {
+  /* margin: auto; */
+  margin-top: 20px;
+}
+#login-links p {
+  color:#007bff;
+}
+#login-links p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  #login-container {
+    max-width: 90%;
+  }
 }
 /* =================Loading Error=============== */
 
@@ -34,6 +191,7 @@
   word-break: break-all;
   word-wrap: break-word;
 }
+
 /* =================Mars Rover=============== */
 #mars-photo-date {
   text-align: center;
@@ -87,14 +245,29 @@
 /* =================Single Mars Image=============== */
 #back-button {
   font-family: "Dosis", sans-serif !important;
-  margin-bottom: 20px;
-  font-size: 20px;
-  border-radius: 5px;
-  box-shadow: 1px 1px grey;
-  margin-left: 20px;
+  /* margin-bottom: 15px; */
+  font-size: 50px;
+  margin-left: 10px;
+}
+#back-button i {
+  color: #343A40;
+}
+#back-button:hover {
+  transform: scale(1.1);
+}
+
+#back-button:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
 }
 #singlePhotoPage {
-  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  min-height: 80vh;
 }
 .single-photo {
   /* display: block; */
@@ -131,7 +304,7 @@ a.active {
     width: 80%;
   }
 }
-/* =================Home=============== */
+/* =================APOD=============== */
 #apod-content {
   width: 90%;
 }
@@ -141,6 +314,7 @@ a.active {
   font-size: 70px;
   /* font-family: 'Cabin', serif !important;  */
   font-family: "Oswald", sans-serif !important;
+  /* font-family: "Dosis", sans-serif !important; */
 }
 .apod-details {
   width: 95%;
@@ -189,15 +363,18 @@ iframe {
   display: block;
 }
 .column-title {
-  margin-left: 25px;
+  /* margin-left: 15px; */
+  text-align: left;
 }
 .icon-holder {
+  /* float: left; */
+  display: block;
   width: 20px;
   height: 20px;
 }
 .heart-icon {
-  width: 20px;
-  height: 20px;
+  max-width: 20px;
+  min-height: 20px;
 }
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
@@ -234,60 +411,90 @@ iframe {
 }
 
 /* =================Loader=============== */
-.popup {
-  position: fixed;
-  width: 100 !important;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+.lds-roller {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
 }
-.popup-inner {
-  position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  bottom: 25%;
-  margin: auto;
-  border-radius: 20px;
-  background: white;
-  display: flex;
-  align-content: center;
-  text-align: center;
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 40px 40px;
 }
-.popup-button-holder {
-  margin: auto;
-  width: 100%;
-}
-.popup-button {
-  width: 25%;
-  margin: 40px 20px 10px 20px;
-  border-radius: 20px;
-  background-color: lightgrey;
-}
-.hide-popup {
-  display: none;
-}
-.show-popup {
+.lds-roller div:after {
+  content: " ";
   display: block;
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #343a40;
+  margin: -4px 0 0 -4px;
 }
-@media screen and (min-width: 0px) and (max-width: 767px) {
-  .popup-inner {
-    left: 15%;
-    right: 15%;
-    top: 15%;
-    bottom: 15%;
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 63px;
+  left: 63px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 68px;
+  left: 56px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 71px;
+  left: 48px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 71px;
+  left: 32px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 68px;
+  left: 24px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 63px;
+  left: 17px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
   }
-  .popup-button {
-    width: 45%;
-    margin: 40px 10px 10px 10px;
+  100% {
+    transform: rotate(360deg);
   }
 }
-
 /* =================Loader=============== */
 
 #loader-container {
@@ -295,8 +502,6 @@ iframe {
   height: 50vh;
   margin: 0;
   padding: 0;
-  /* width: 100vw; */
-  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -468,5 +673,89 @@ iframe {
 
   100% {
     -moz-transform: scale(0.3);
+  }
+}
+
+/* ========popup */
+.popup {
+  position: fixed;
+  width: 100 !important;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.popup-inner {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 25%;
+  bottom: 25%;
+  margin: auto;
+  border-radius: 20px;
+  background: white;
+  display: flex;
+  align-content: center;
+  text-align: center;
+}
+.popup-button-holder {
+  margin: auto;
+  width: 100%;
+}
+.popup-button {
+  width: 25%;
+  margin: 40px 20px 10px 20px;
+  border-radius: 20px;
+  background-color: lightgrey;
+}
+.hide-popup {
+  display: none;
+}
+.show-popup {
+  display: block;
+}
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .popup-inner {
+    left: 15%;
+    right: 15%;
+    top: 15%;
+    bottom: 15%;
+  }
+  .popup-button {
+    width: 45%;
+    margin: 40px 10px 10px 10px;
+  }
+}
+
+/* =========== edit password ============ */
+#edit-password-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  width: 100%;
+}
+#password-form-holder {
+  max-width: 31%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#password-form-holder button {
+  margin-top: 15px;
+}
+
+#password-form {
+  margin-top: 30px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  #password-form-holder {
+    max-width: 90%;
   }
 }

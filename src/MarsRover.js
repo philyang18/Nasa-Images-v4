@@ -21,25 +21,21 @@ export default class MarsRover extends React.Component {
   componentDidMount = async () => {
     this.setState({ loading: true });
     var today = new Date();
-    if (this.props.location.dateProps) {
-      var dateComponents = this.props.location.dateProps.earth_date.split("-");
-      console.log(dateComponents);
+    if (this.props.location.state.earth_date) {
+      var dateComponents = this.props.location.state.earth_date.split("-");
       today.setDate(Number(dateComponents[2]));
       today.setMonth(Number(dateComponents[1]) - 1);
       today.setFullYear(Number(dateComponents[0]));
-      const photos = await fetchRover(this.props.location.dateProps.earth_date);
+      const photos = await fetchRover(this.props.location.state.earth_date);
       this.setState({ photos });
+      
     } else {
-      today.setDate(1);
-      today.setMonth(9);
       var year = today.getFullYear(),
         month = today.getMonth() + 1,
         day = today.getDate();
 
-      console.log(today);
       while (this.state.photos.length === 0) {
         var todayString = moment(today).format("YYYY-M-D");
-        console.log("2:" + todayString);
         const photos = await fetchRover(todayString);
         if (!photos) {
           this.setState({ overRequested: true });
@@ -94,7 +90,7 @@ export default class MarsRover extends React.Component {
       var todayString = moment(this.state.currentDate).format("YYYY-M-D");
       const photos = await fetchRover(todayString);
       console.log(photos);
-      console.log(photos.length);
+      // console.log(photos.length);
       if (photos.length === 0) {
         this.setState({ photos, loading: false });
       }
@@ -113,7 +109,7 @@ export default class MarsRover extends React.Component {
   render() {
     return (
       <DocumentTitle title="Mars Images">
-        <div id="marsPage">
+        <div id="marsPage" onClick={this.props.onClick}>
           {this.state.overRequested ? (
             <div>Too many requests to Nasa API </div>
           ) : (
@@ -152,11 +148,17 @@ export default class MarsRover extends React.Component {
                               key={photo.id}
                             >
                               <NavLink
-                                to={`/mars/earth_date=${photo.earth_date}&photo_id=${photo.id}`}
+                                to={{
+                                  pathname:`/mars/earth_date=${photo.earth_date}&photo_id=${photo.id}`,
+                                  state: {
+                                    email: this.props.location.state.email
+                                  }
+                                }}
                               >
                                 <img
                                   src={photo.img_src}
-                                  alt={photo.camera.full_name}
+                                  alt="mars image"
+                                  loading="lazy"
                                 />
                               </NavLink>
                             </div>

@@ -71,3 +71,22 @@ export function deleteCommentNotification(props){
         }
     });
 }
+
+export function updatePasswordNotification(props) {
+    const { id } = props;
+    console.log("hi");
+    store.addNotification({
+        id: id,
+        title: "UPDATED",
+        message: "Updated password!",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        dismiss: {
+          duration: 750,
+          onScreen: true
+        }
+    });
+}

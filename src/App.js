@@ -2,71 +2,79 @@ import React from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
-import Home from "./Home";
+import APOD from "./APOD";
 import MarsRover from "./MarsRover";
 import SingleMarsImage from "./SingleMarsImage";
-import Favorites from "./Favorites";
+import Login from './Login';
 import {
   BrowserRouter as Router,
   Route,
-  NavLink,
-  Switch
+  Switch,
+  Redirect
 } from "react-router-dom";
 import EditFavorite from "./EditFavorite";
+import Favorites from './Favorites';
 import ErrorPage from "./ErrorPage";
-import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import NavigationBar from "./NavigationBar";
+import EditPassword from "./EditPassword";
+import Home from './Home';
 
+
+
+function PrivateRoute ({component: Component, authed, onClick, ...rest}) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => authed === true
+        ? <Component {...props} onClick={onClick}/>
+        : <Redirect to={{
+            pathname: '/'
+          }} />}
+    />
+  )
+}
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      showAccountMenu: false
+    };
+  }
+
+  saveEmail = (email) => {
+    this.setState({email});
+  }
+  logout = () => {
+    this.setState({email: ""});
+  }
+  toggleAccountMenu = () => {
+    this.setState({showAccountMenu: !this.state.showAccountMenu});
+  }
+  closeAccountMenu = () => {
+    this.setState({showAccountMenu: false});
+  }
   render() {
     return (
-      <Router id="appPage">
-        <ReactNotification />
-        <nav
-          id="navigation-bar"
-          className="navbar navbar-expand-lg navbar-dark bg-dark"
-        >
-          <a className="navbar-brand disabled" href="#">
-            NASA Images
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/" exact={true}>
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/mars">
-                  Mars
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/favorites">
-                  Favorites
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </nav>
+      <Router id="appPage" onClick={this.closeAccountMenu}>
         <Switch>
-          <Route path="/" exact={true} component={Home} />
-          <Route path="/mars" exact={true} component={MarsRover} />
-          <Route path="/mars/:info" exact={true} component={SingleMarsImage} />
-          <Route path="/favorites" exact={true} component={Favorites} />
-          <Route path="/favorites/edit/:id" component={EditFavorite} />
-          <Route component={ErrorPage} />
+          {/* <Route path="/" exact render={(props) => <Login {...props} onLogin={this.saveEmail} />} /> */}
+          <Route path="/" exact render={(props) => <Login {...props} onLogin={this.saveEmail} />} />
+          <Route path="/:anything">
+            <NavigationBar email={this.state.email} onClick={this.closeAccountMenu} onLogout={this.logout} onToggle={this.toggleAccountMenu} show={this.state.showAccountMenu}/>
+            <Switch>
+              <PrivateRoute path="/apod" onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true} exact component={APOD}/>
+              {/* <Route path="/apod" exact render={(props) =>  <APOD {...props} email={this.state.email} />}/> */}
+              <PrivateRoute path="/mars/:info" exact onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true} component={SingleMarsImage} />
+              <PrivateRoute path="/mars" onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true} exact component={MarsRover} />
+              <PrivateRoute path="/favorites/edit/:id" exact onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true} component={EditFavorite} />
+              <PrivateRoute path="/favorites" onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true} exact component={Favorites} />
+              <PrivateRoute path="/account/password" onClick={this.closeAccountMenu} authed= {this.state.length === 0 ? false : true} exact component={EditPassword} />
+              <PrivateRoute component={ErrorPage}  onClick={this.closeAccountMenu} authed = {this.state.email.length === 0 ? false : true}/>
+            </Switch>
+          </Route>
         </Switch>
       </Router>
     );
