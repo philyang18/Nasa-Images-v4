@@ -11,7 +11,7 @@ let Account = require('./account.model');
 app.use(cors());
 app.use(bodyParser.json());
 const path = require('path');
-app.use(express.static(path.join(__dirname, 'client/build')))
+app.use(express.static(path.join(__dirname, '../build')))
 
 mongoose.connect('mongodb://127.0.0.1:27017/nasa', { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
