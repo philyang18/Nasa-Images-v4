@@ -1,4 +1,6 @@
 {
-  "mongoURI": "mongodb+srv://root:6VN1B5vYT1XPcCMx@cluster0-6i87j.mongodb.net/main_user?retryWrites=true",
+  "mongoURI": "mongodb+srv://cluster0-6i87j.mongodb.net/nasa --username main_user",
   "jwtSecret": "sl_myJwtSecret"
 }
+
+{/*"mongoURI": "mongodb+srv://root:6VN1B5vYT1XPcCMx@cluster0-6i87j.mongodb.net/main_user?retryWrites=true"*/}
