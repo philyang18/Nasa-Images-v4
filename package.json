@@ -30,7 +30,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.17.5"
   },
-  "resolutions": { 
-    "yargs-parser": "^13.1.2" 
+  "resolutions": {
+    "yargs-parser": "^13.1.2"
   }
 }

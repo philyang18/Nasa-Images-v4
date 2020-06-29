@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -11,7 +12,6 @@ let Account = require('./account.model');
 app.use(cors());
 app.use(bodyParser.json());
 const path = require('path');
-app.use(express.static(path.join(__dirname, '../build')))
 
 mongoose.connect('mongodb://127.0.0.1:27017/nasa', { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
@@ -254,7 +254,14 @@ accountRoute.route('/favorites').post(function(req, res) {
     });
 });
 app.use('/account', accountRoute);
-
+if (process.env.NODE_ENV === 'production') {
+// Set static folder
+app.use(express.static('client/build'));
+// console.log(__dirname);
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
+}
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });

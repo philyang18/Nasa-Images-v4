@@ -1,14 +1,15 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import path from 'path';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import config from './config';
-import routes from './routes';
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const config = require('./config');
+const routes = require('./routes');
+require('dotenv').config();
 
 
-const { MONGO_URI, MONGO_DB_NAME } = config;
+const { MONGO_URI, MONGO_DB_NAME } = process.env;
 
 const app = express();
 
@@ -21,10 +22,12 @@ app.use(bodyParser.json());
 
 // DB Config
 const db = `${MONGO_URI}/${MONGO_DB_NAME}`;
-
+// "mongodb://localhost:27017/nasa"
 // Connect to Mongo
 mongoose
-  .connect(db, {
+  // .connect(db, {
+  .connect("mongodb://127.0.0.1:27017/nasa", {
+    
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -41,10 +44,10 @@ process.env.NODE_ENV = 'production';
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('client/build'));
-
+  // console.log(__dirname);
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
-export default app;
+module.exports = app;

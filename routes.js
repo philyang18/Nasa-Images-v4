@@ -1,11 +1,8 @@
-import { Router } from 'express';
-import bcrypt from 'bcryptjs';
-import config from '../../config';
-import jwt from 'jsonwebtoken';
+var express = require('express');
+
 
 let Account = require('./account.model');
-const { JWT_SECRET } = config;
-const router = Router();
+const router = express.Router();
 
 
 
@@ -150,7 +147,7 @@ router.delete('/favorites/mars/delete', function(req,res) {
         }
     });
 });
-router.put('/favorites/mars/add', rfunction(req,res) {
+router.put('/favorites/mars/add', function(req,res) {
     
     Account.findOne({ _id: req.body._id }).then(account => {
         account.favorites.mars.unshift({
@@ -242,4 +239,4 @@ router.post('/favorites', function(req, res) {
     });
 });
 
-export default router;
+module.exports = router;
