@@ -3,15 +3,15 @@ config.MONGO_URI = "mongodb+srv://main_user:ad4Jik5rWaZ92WZE@cluster0-lvl3u.mong
 config.PORT = 4000;
 config.MONGO_DB_NAME = "nasa";
 
-// import dotenv from 'dotenv';
-
-// dotenv.config();
-
-// export default {
-//   PORT: process.env.PORT,
-//   MONGO_URI: process.env.MONGO_URI,
-//   MONGO_DB_NAME: process.env.MONGO_DB_NAME,
-//   JWT_SECRET: process.env.JWT_SECRET
-// };
-
+// const config = {
+//     NODE_ENV: process.env.NODE_ENV || 'development',
+//     PORT: process.env.PORT || 4000,
+//     JWT_SECRET: process.env.JWT_SECRET || "YOUR_secret_key",
+//     MONGO_URI: process.env.MONGODB_URI ||
+//       process.env.MONGO_HOST ||
+//       'mongodb://' + (process.env.IP || 'localhost') + ':' +
+//       (process.env.MONGO_PORT || '27017'),
+//     MONGO_DB_NAME: 'nasa'
+// }
+  
 

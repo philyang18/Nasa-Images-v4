@@ -43,7 +43,7 @@ export default class Login extends React.Component {
             _id: this.state.email.toLowerCase(),
             password: this.state.password
         };
-        await axios.post('http://localhost:4000/account/login', account)
+        await axios.post('/account/login', account)
             .then(response => {
                 this.props.onLogin(this.state.email);
                 this.setState({isLoggedIn: true, showUI: false});
@@ -89,7 +89,7 @@ export default class Login extends React.Component {
                 password: this.state.password,
                 favorites: []
             };
-            await axios.post('http://localhost:4000/account/signup', account)
+            await axios.post('/account/signup', account)
                 .then(response => {
                     this.props.onLogin(this.state.email);
                     this.setState({isLoggedIn: true, showUI: false});

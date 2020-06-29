@@ -82,7 +82,7 @@ export default class APOD extends React.Component {
 				_id: id
 			}
 		}
-		let res = await axios.post(`http://localhost:4000/account/favorites/apod/fetch`, acc);
+		let res = await axios.post(`/account/favorites/apod/fetch`, acc);
 		if(res.status !== 200) {
 			this.setState({ liked: false });
 		} else {
@@ -118,7 +118,7 @@ export default class APOD extends React.Component {
 					api: "apod"
 				}
 			};
-			axios.put('http://localhost:4000/account/favorites/apod/add', newFav)
+			axios.put('/account/favorites/apod/add', newFav)
 				.then(response => {
 					addPhotoNotification(id);
 				})
@@ -128,7 +128,7 @@ export default class APOD extends React.Component {
 			
 		}
 		else if(this.state.liked){
-			axios.delete('http://localhost:4000/account/favorites/apod/delete', {
+			axios.delete('/favorites/apod/delete', {
 				// for delete, all data must be wrapped in data
                 data: {
 					_id: this.props.location.state.email,

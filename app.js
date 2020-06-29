@@ -7,9 +7,9 @@ const morgan = require('morgan');
 const config = require('./config');
 const routes = require('./routes');
 require('dotenv').config();
-
-
-const { MONGO_URI, MONGO_DB_NAME } = process.env;
+// const config = require('./config/config');
+// const { MONGO_URI, MONGO_DB_NAME } = process.env;
+// const { MONGO_URI, MONGO_DB_NAME } = config;
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 // DB Config
-const db = `${MONGO_URI}/${MONGO_DB_NAME}`;
+// const db = `${MONGO_URI}`;
 // "mongodb://localhost:27017/nasa"
 // Connect to Mongo
 mongoose

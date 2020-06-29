@@ -16,7 +16,7 @@ export default class Favorites extends React.Component {
   }
   componentDidMount = async () => {
     this.setState({ loading: true });
-    const fav = await axios.post('http://localhost:4000/account/favorites', { _id: this.props.location.state.email });
+    const fav = await axios.post('/account/favorites', { _id: this.props.location.state.email });
     this.setState({mars: fav.data.mars, apod: fav.data.apod});
     
     this.setState({ loading: false });

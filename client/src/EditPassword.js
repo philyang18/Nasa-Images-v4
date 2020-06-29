@@ -25,7 +25,7 @@ export default class EditPassword extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        var response = await axios.post('http://localhost:4000/account/login', {
+        var response = await axios.post('/account/login', {
             _id: this.props.location.state.email,
             password: this.state.password
         });
@@ -47,7 +47,7 @@ export default class EditPassword extends React.Component {
         else if(!/^(?=.*[0-9])/.test(this.state.newPassword)) {
             this.setState({passwordErrorMessage: "New password must contain 1 numerical character"});
         } else {
-            await axios.post('http://localhost:4000/account/password/edit', {
+            await axios.post('/account/password/edit', {
                 _id: this.props.location.state.email,
                 password: this.state.password,
                 new_password: this.state.newPassword

@@ -41,7 +41,7 @@ export default class EditFavorite extends React.Component {
         _id: this.state.id
       }
     }
-    let response = await axios.post(`http://localhost:4000/account/favorites/${this.props.location.state.api}/fetch`, acc);
+    let response = await axios.post(`/account/favorites/${this.props.location.state.api}/fetch`, acc);
     
     if(response.status === 200) {
       this.setState({ photo: response.data, idExists: true });
@@ -68,7 +68,7 @@ export default class EditFavorite extends React.Component {
   }
 
   toggleLike = async () => {
-    await axios.delete(`http://localhost:4000/account/favorites/${this.state.photo.api}/delete`, {
+    await axios.delete(`/account/favorites/${this.state.photo.api}/delete`, {
 				// for delete, all data must be wrapped in data
         data: {
 					_id: this.props.location.state.email,
@@ -114,7 +114,7 @@ export default class EditFavorite extends React.Component {
       updateCommentNotification(id);
     }
     this.setState({ comment: newComment });
-    axios.post(`http://localhost:4000/account/favorites/${this.state.photo.api}/edit`, {
+    axios.post(`/account/favorites/${this.state.photo.api}/edit`, {
       _id: this.props.location.state.email,
       data: {
         _id: id,
