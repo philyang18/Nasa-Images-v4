@@ -96,10 +96,11 @@ export default class EditFavorite extends React.Component {
   }
 
   lastTap = null;
-  handleDoubleTap = () => {
+  handleDoubleTap = event => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (this.lastTap && now - this.lastTap < DOUBLE_PRESS_DELAY) {
+      event.preventDefault();
       this.openWarning();
     } else {
       this.lastTap = now;

@@ -24,7 +24,7 @@ export default class Login extends React.Component {
     }
     handleToggle = e => {
         e.preventDefault();
-        this.setState({showLogin: !this.state.showLogin, password: "", passwordAgain: "", email: "" });
+        this.setState({showLogin: !this.state.showLogin, password: "", passwordAgain: "", email: "", loginError: false,emailErrorMessage: "", passwordErrorMessage: "" });
     }
     saveEmail = event => {
         this.setState({email: event.target.value, emailErrorMessage: "", loginError: false});
@@ -45,14 +45,13 @@ export default class Login extends React.Component {
         };
         await axios.post(`${BACK_SERVER_URL}/account/login`, account)
             .then(response => {
-                this.props.onLogin(this.state.email);
-                this.setState({isLoggedIn: true, showUI: false});
-                // this.props.history.push({
-                //     pathname: '/',
-                //     state: {
-                //         email: this.state.email
-                //     }
-                // });
+                if(response.status === 200) {
+                    this.props.onLogin(this.state.email);
+                    this.setState({isLoggedIn: true, showUI: false});
+                    console.log(response);
+                } else {
+                    this.setState({loginError: true});
+                }
             })
             .catch( error => {
                 this.setState({loginError: true});
