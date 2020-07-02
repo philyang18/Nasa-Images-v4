@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import DocumentTitle from "react-document-title";
 import { updatePasswordNotification } from './Notifications';
+import { BACK_SERVER_URL } from './NasaAPIs';
 
 export default class EditPassword extends React.Component {
     constructor(props) {
@@ -25,7 +27,7 @@ export default class EditPassword extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        var response = await axios.post('/account/login', {
+        var response = await axios.post(`${BACK_SERVER_URL}/account/login`, {
             _id: this.props.location.state.email,
             password: this.state.password
         });
@@ -47,7 +49,7 @@ export default class EditPassword extends React.Component {
         else if(!/^(?=.*[0-9])/.test(this.state.newPassword)) {
             this.setState({passwordErrorMessage: "New password must contain 1 numerical character"});
         } else {
-            await axios.post('/account/password/edit', {
+            await axios.post(`${BACK_SERVER_URL}/account/password/edit`, {
                 _id: this.props.location.state.email,
                 password: this.state.password,
                 new_password: this.state.newPassword
@@ -68,31 +70,33 @@ export default class EditPassword extends React.Component {
     }
     render() {
         return(
-            <div id="edit-password-page" onClick={this.props.onClick}>
-                <div className="container">
-                    <div className="row">
-                        <div id="password-form-holder" className="col-12">
-                            <h1>Change Password</h1>
-                            <form id="password-form" onSubmit={this.handleSubmit}>
-                                <div class="form-group">
-                                    <label>Current Password:</label>
-                                    <input className="form-control" type="password" placeholder="********" value={this.state.password} onChange={this.savePassword}/>
-                                </div>
-                                <div class="form-group">
-                                    <label>New Password:</label>
-                                    <input className="form-control" type="password" placeholder="********" value={this.state.newPassword} onChange={this.saveNewPassword}/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Re-enter New Password:</label>
-                                    <input className="form-control" type="password" placeholder="********" value={this.state.newPasswordAgain} onChange={this.saveNewPasswordAgain}/>
-                                    <div className="text-danger">{this.state.passwordErrorMessage}</div>
-                                </div>
-                                <button className="btn btn-primary" type="submit">Update</button>
-                            </form>
+            <DocumentTitle title="Change Password">
+                <div id="edit-password-page" onClick={this.props.onClick}>
+                    <div className="container">
+                        <div className="row">
+                            <div id="password-form-holder" className="col-12">
+                                <h1>Change Password</h1>
+                                <form id="password-form" onSubmit={this.handleSubmit}>
+                                    <div class="form-group">
+                                        <label>Current Password:</label>
+                                        <input className="form-control" type="password" placeholder="********" value={this.state.password} onChange={this.savePassword}/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>New Password:</label>
+                                        <input className="form-control" type="password" placeholder="********" value={this.state.newPassword} onChange={this.saveNewPassword}/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Re-enter New Password:</label>
+                                        <input className="form-control" type="password" placeholder="********" value={this.state.newPasswordAgain} onChange={this.saveNewPasswordAgain}/>
+                                        <div className="text-danger">{this.state.passwordErrorMessage}</div>
+                                    </div>
+                                    <button className="btn btn-primary" type="submit">Update</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </DocumentTitle>
         );
     }
 }

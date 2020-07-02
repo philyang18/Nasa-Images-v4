@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchRover, fetchMarsFavorites } from "./NasaAPIs";
+import { fetchRover, fetchMarsFavorites, BACK_SERVER_URL } from "./NasaAPIs";
 import { NavLink } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
 import Loading from "./Loading";
@@ -64,7 +64,7 @@ export default class SingleMarsImage extends React.Component {
 				_id: id
 			}
 		}
-		let res = await axios.post(`http://localhost:4000/account/favorites/mars/fetch`, acc);
+		let res = await axios.post(`${BACK_SERVER_URL}/account/favorites/mars/fetch`, acc);
 		console.log(res);
 		if(res.status !== 200) {
 			this.setState({ liked: false });
@@ -88,7 +88,7 @@ export default class SingleMarsImage extends React.Component {
           array_id: this.state.photo.id
 				}
 			};
-			axios.put('http://localhost:4000/account/favorites/mars/add', newFav)
+			axios.put(`${BACK_SERVER_URL}/account/favorites/mars/add`, newFav)
 				.then(response => {
 					console.log(response);
 				})
@@ -98,7 +98,7 @@ export default class SingleMarsImage extends React.Component {
 			addPhotoNotification(id);
 		}
 		else if(this.state.liked){
-			axios.delete('http://localhost:4000/account/favorites/mars/delete', {
+			axios.delete(`${BACK_SERVER_URL}/account/favorites/mars/delete`, {
 				// for delete, all data must be wrapped in data
         data: {
 					_id: this.props.location.state.email,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchAPOD, fetchApodFavorites } from './NasaAPIs';
+import { fetchAPOD, fetchApodFavorites, BACK_SERVER_URL } from './NasaAPIs';
 import { formatDisplayDate } from './Formatting';
 import Loading from './Loading';
 import Iframe from 'react-iframe';
@@ -7,7 +7,6 @@ import thumbnail from './images/galaxy.jpg';
 import { addPhotoNotification, removePhotoNotification } from './Notifications';
 import DocumentTitle from "react-document-title";
 import axios from 'axios';
-
 const API = "https://itp404-final-project-yangphil.herokuapp.com/api/favorites";
 
 
@@ -82,7 +81,7 @@ export default class APOD extends React.Component {
 				_id: id
 			}
 		}
-		let res = await axios.post(`/account/favorites/apod/fetch`, acc);
+		let res = await axios.post(`${BACK_SERVER_URL}/account/favorites/apod/fetch`, acc);
 		if(res.status !== 200) {
 			this.setState({ liked: false });
 		} else {
@@ -118,7 +117,7 @@ export default class APOD extends React.Component {
 					api: "apod"
 				}
 			};
-			axios.put('/account/favorites/apod/add', newFav)
+			axios.put(`${BACK_SERVER_URL}/account/favorites/apod/add`, newFav)
 				.then(response => {
 					addPhotoNotification(id);
 				})
@@ -164,12 +163,12 @@ export default class APOD extends React.Component {
 			this.setState({ descriptionSection: "hide-description", descriptionButton: "show-description", description: this.state.apod.explanation});
 		}
         return(
-			<DocumentTitle title="NASA Images">
+			<DocumentTitle title="APOD">
 				<div id="homePage" onClick={this.props.onClick}> 
 					{this.state.overRequestedAPIAPI ? <div>Too many requests to Nasa API</div> :
 						<div> 
 							<div className="container">
-								<h1 className="page-title d-xs-block d-md-none"><div>NASA</div><div>Photo of the Day</div></h1>	
+								<h1 className="page-title d-xs-block d-md-none"><div>Astronomy</div><div>Photo of the Day</div></h1>	
 								<h1 className="page-title d-none d-md-block">Astronomy Picture of the Day</h1>		
 								{this.state.loading ? <Loading/> : 
 									<div className="row">

@@ -1,6 +1,8 @@
 const API_KEY1 = "RzyT98G4RWi51f3LYNHdbdEzUJkUH7RdAJnQoOd0";
 const API_KEY2 = "BfzfbPpRYn7O5rafnhT7BMOC0hUoEV54ybVwWe1a";
 const API_KEY3 = "PBViMuqFzfpvcXjqnmC6jYR4pqkNbyC0jNUy95Sh";
+export const BACK_SERVER_URL = 'http://ec2-100-25-167-78.compute-1.amazonaws.com:5000';
+
 export async function fetchRover(date) {
   try {
     const response1 = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY1}`);

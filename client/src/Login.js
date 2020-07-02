@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-
-
+import DocumentTitle from "react-document-title";
+import { BACK_SERVER_URL } from './NasaAPIs';
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -43,7 +43,7 @@ export default class Login extends React.Component {
             _id: this.state.email.toLowerCase(),
             password: this.state.password
         };
-        await axios.post('/account/login', account)
+        await axios.post(`${BACK_SERVER_URL}/account/login`, account)
             .then(response => {
                 this.props.onLogin(this.state.email);
                 this.setState({isLoggedIn: true, showUI: false});
@@ -89,7 +89,7 @@ export default class Login extends React.Component {
                 password: this.state.password,
                 favorites: []
             };
-            await axios.post('/account/signup', account)
+            await axios.post(`${BACK_SERVER_URL}/account/signup`, account)
                 .then(response => {
                     this.props.onLogin(this.state.email);
                     this.setState({isLoggedIn: true, showUI: false});
@@ -105,102 +105,104 @@ export default class Login extends React.Component {
     render() {
 
         return (
-            <div id="login-page">
-                {this.state.showUI ? 
-                    <div className="container">
-                        <div className="row">
-                            <div id="login-container" className="col-12">
-                                <div id="login-content">
-                                    <h1>NASA Images</h1>
-                                    {this.state.showLogin ? 
-                                        <div>
-                                            <h3>Login</h3>
-                                            <form onSubmit={this.handleLogin} >
-                                                <div className="form-group">
-                                                    <label>Email: </label>
-                                                    <input type="email" className="form-control" placeholder="johndoe@gmail.com" onChange={this.saveEmail} value={this.state.email}/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label>Password: </label>
-                                                    <input type="password" className="form-control" placeholder="********" onChange={this.savePassword} value={this.state.password}/>
-                                                    {this.state.loginError ? <div className="text-danger">Invalid email or password</div> : <div /> }
-                                                </div>
-                                                <button className="btn btn-primary" type="submit">Login</button>
-                                            </form>
-                                            <div id="login-links" className="row">
-                                                <p className="col-6">Forgot Password?</p>
-                                                <p className="col-6"onClick={this.handleToggle}>Sign Up</p>
-                                            </div>
-                                        </div> :
-                                        <div>
-                                            <h3>Create Account</h3>
-                                            <form onSubmit={this.handleCreate} >
-                                                <div className="form-group">
-                                                    <label>Email: </label>
-                                                    <input type="email" className="form-control" placeholder="johndoe@gmail.com" onChange={this.saveEmail} value={this.state.email}/>
-                                                    {this.state.emailErrorMessage.length > 0 ? <div className="text-danger">{this.state.emailErrorMessage}</div> : <div /> }
-                                                </div>
-                                                
-                                                <div className="form-group">
-                                                    <label>Password: </label>
-                                                    <input type="password" className="form-control" placeholder="********" onChange={this.savePassword} value={this.state.password}/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label>Re-enter Password: </label>
-                                                    <input type="password" className="form-control" placeholder="********" onChange={this.savePasswordAgain} value={this.state.passwordAgain}/>
-                                                    {this.state.passwordErrorMessage.length > 0 ? <div className="text-danger">{this.state.passwordErrorMessage}</div> : <div /> }
-                                                </div>
-                                                <button className="btn btn-success" type="submit">Create</button>
-                                            </form>
-                                            <div id="login-links" className="row">
-                                                <p onClick={this.handleToggle} className="col-12">Already have an account? Log in</p>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div> 
-                        </div>
-                    </div> :
-                    <div id="home-page">
+            <DocumentTitle title="Nasa Images">
+                <div id="login-page">
+                    {this.state.showUI ? 
                         <div className="container">
                             <div className="row">
-                                <div className="col-12">
-                                    <h1>NASA IMAGES</h1>
-                                    {this.state.isLoggedIn ? 
-                                        <div id="home-link-container" className="row">
-                                            
-                                            <NavLink className="col-6" to={{
-                                                    pathname: '/apod',
+                                <div id="login-container" className="col-12">
+                                    <div id="login-content">
+                                        <h1>NASA Images</h1>
+                                        {this.state.showLogin ? 
+                                            <div>
+                                                <h3>Login</h3>
+                                                <form onSubmit={this.handleLogin} >
+                                                    <div className="form-group">
+                                                        <label>Email: </label>
+                                                        <input type="email" className="form-control" placeholder="johndoe@gmail.com" onChange={this.saveEmail} value={this.state.email}/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label>Password: </label>
+                                                        <input type="password" className="form-control" placeholder="********" onChange={this.savePassword} value={this.state.password}/>
+                                                        {this.state.loginError ? <div className="text-danger">Invalid email or password</div> : <div /> }
+                                                    </div>
+                                                    <button className="btn btn-primary" type="submit">Login</button>
+                                                </form>
+                                                <div id="login-links" className="row">
+                                                    <p className="col-6">Forgot Password?</p>
+                                                    <p className="col-6"onClick={this.handleToggle}>Sign Up</p>
+                                                </div>
+                                            </div> :
+                                            <div>
+                                                <h3>Create Account</h3>
+                                                <form onSubmit={this.handleCreate} >
+                                                    <div className="form-group">
+                                                        <label>Email: </label>
+                                                        <input type="email" className="form-control" placeholder="johndoe@gmail.com" onChange={this.saveEmail} value={this.state.email}/>
+                                                        {this.state.emailErrorMessage.length > 0 ? <div className="text-danger">{this.state.emailErrorMessage}</div> : <div /> }
+                                                    </div>
+                                                    
+                                                    <div className="form-group">
+                                                        <label>Password: </label>
+                                                        <input type="password" className="form-control" placeholder="********" onChange={this.savePassword} value={this.state.password}/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label>Re-enter Password: </label>
+                                                        <input type="password" className="form-control" placeholder="********" onChange={this.savePasswordAgain} value={this.state.passwordAgain}/>
+                                                        {this.state.passwordErrorMessage.length > 0 ? <div className="text-danger">{this.state.passwordErrorMessage}</div> : <div /> }
+                                                    </div>
+                                                    <button className="btn btn-success" type="submit">Create</button>
+                                                </form>
+                                                <div id="login-links" className="row">
+                                                    <p onClick={this.handleToggle} className="col-12">Already have an account? Log in</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div> 
+                            </div>
+                        </div> :
+                        <div id="home-page">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h1>NASA IMAGES</h1>
+                                        {this.state.isLoggedIn ? 
+                                            <div id="home-link-container" className="row">
+                                                
+                                                <NavLink className="col-6" to={{
+                                                        pathname: '/apod',
+                                                        state: {
+                                                            email: this.state.email
+                                                        }
+                                                    }}>
+                                                    <h2 >
+                                                        APOD
+                                                    </h2>
+                                                </NavLink>
+
+                                                
+                                                <NavLink className="col-6" to={{
+                                                    pathname: '/mars',
                                                     state: {
                                                         email: this.state.email
                                                     }
                                                 }}>
-                                                <h2 >
-                                                    APOD
-                                                </h2>
-                                            </NavLink>
-
-                                            
-                                            <NavLink className="col-6" to={{
-                                                pathname: '/mars',
-                                                state: {
-                                                    email: this.state.email
-                                                }
-                                            }}>
-                                                <h2>
-                                                    Mars
-                                                </h2>
-                                            </NavLink>
-                                            
-                                        </div> :
-                                        <h2 onClick={this.toggleUI}>Login / Signup</h2> 
-                                    }
+                                                    <h2>
+                                                        Mars
+                                                    </h2>
+                                                </NavLink>
+                                                
+                                            </div> :
+                                            <h2 onClick={this.toggleUI}>Login / Signup</h2> 
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
+            </DocumentTitle>
         );
     }
 }
